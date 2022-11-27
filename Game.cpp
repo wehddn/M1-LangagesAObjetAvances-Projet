@@ -3,11 +3,7 @@
 #include <iostream>
 
 Game::Game(){
-    srand(time(0));
-    for(int j=0; j<5; j++)
-        {    
-            deck.push_back(Tile());
-        }
+    
 }
 
 Tile Game::getTile(){
@@ -55,12 +51,6 @@ void Game::putTile(int x, int y, Tile* t){
             boardY++;
         }
     }
-}
-
-void Game::setTestBoard(Tile* t){
-    testBoard.push_back(nullptr);
-    testBoard.push_back(t);
-    testBoard.push_back(nullptr);
 }
 
 vector<vector<Tile*>> Game::getBoard(){
