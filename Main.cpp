@@ -48,7 +48,8 @@ int main()
         //condition pour effectuer une action de clic une seule fois
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){    
             lock_click = false;
-
+        }
+        
         //apres un clic, on compare la position du clic avec les emplacements possibles pour la tuile
         if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && lock_click != true){
             lock_click = true;
