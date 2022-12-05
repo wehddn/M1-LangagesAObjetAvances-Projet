@@ -3,71 +3,39 @@
 #include <iostream>
 
 Game::Game(){
-    
+    board = new Board();
+    setDeck();
 }
 
-Tile Game::getTile(){
-    Tile r = deck.back();
+Tile* Game::getTile(){
+    Tile* r = deck.back();
     deck.pop_back();
     return r;
 }
 
-void Game::putTile(int x, int y, Tile* t){
-    if (board.size()==0){
-        vector<Tile*> line(3, nullptr);
-        board.push_back(line);
-        board.push_back(line);
-        board.push_back(line);
-        board[1][1]=t;
-        boardX = 3; boardY = 3;
-        return;
-    }
-    else{
-        board[x][y]=t;
-        
-        if (x==boardX-1){
-            vector<Tile*> line(boardY, nullptr);
-            board.push_back(line);
-            boardX++;
-        }
-
-        if (x==0){
-            vector<Tile*> line(boardY, nullptr);
-            board.insert(board.begin(), line);
-            boardX++;
-        }
-
-        if (y==boardY-1){
-            for(auto& row:board){
-                row.push_back(nullptr);
-            }
-            boardY++;
-        }
-
-        if (y==0){
-            for(auto& row:board){
-                row.insert(row.begin(), nullptr);
-            }
-            boardY++;
-        }
-    }
+Board* Game::getBoard(){
+    return board;
 }
 
-vector<vector<Tile*>> Game::getBoard(){
-    return board;
+void Game::setDeck(){
+    int size = board->getTileSize();
+    for(int i=0; i<deck_size; i++){
+        Tile* t = new Tile();
+        t->setPosition(sf::Vector2f(size, size));
+        deck.push_back(t);
+    }
 }
 
 std::ostream& operator<< (std::ostream &out, Game &game)
 {   string res = "";
-    Tile t = game.getTile();
-    for(auto& row:game.getBoard()){
+    /*for(auto& row:game.getBoard()){
         for(auto& col:row){
             if(col == nullptr)
                 cout << "null\n";
             else
                 cout << *col;
         }
-    }
+    }*/
     out << "";
     return out;
 }

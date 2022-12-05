@@ -1,6 +1,5 @@
 #include "Tile.hpp"
 
-
 #include <iostream>
 
 Tile::Tile(){
@@ -12,32 +11,36 @@ Tile::Tile(){
             sides[i].push_back((rand() % 3));
         }
     }
-    setUpSprite();
+    setUpRect();
 }
 
-void Tile::setUpSprite(){
+void Tile::setUpRect(){
+    int recth = 120;    //TODO modifier
+    getRect()->setSize(sf::Vector2f(recth, recth));
     font.loadFromFile("./src/Gargi.ttf");
     sf::Texture *texture = new sf::Texture;
     texture->loadFromFile("./src/tile.png");
-    getSprite()->setTexture(*texture);
-    getSprite()->scale(sf::Vector2f(0.25,0.25));
-    
-    int x = 0; int y = 0;
-    float w = getSprite()->getGlobalBounds().width;
-    float h = getSprite()->getGlobalBounds().height;
-    
+    getRect()->setTexture(texture);
+        
     for (int i=0; i<4; i++){
         for (int j=0; j<3; j++){
             text[i][j].setFont(font);
-            text[i][j].setCharacterSize(20);
-            text[i][j].setFillColor(sf::Color::Black);
+            text[i][j].setCharacterSize(15);
+            text[i][j].setFillColor(sf::Color::Red);
             text[i][j].setStyle(sf::Text::Bold | sf::Text::Underlined);
             text[i][j].setString(to_string(sides.at(i).at(j)));
         }
     }
 
+    setText(0, 0);
+}
+
+void Tile::setText(float x, float y){
+    float w = getRect()->getGlobalBounds().width;
+    float h = getRect()->getGlobalBounds().height;
+
     sf::FloatRect fr = text[0][0].getGlobalBounds();
-    
+
     int textx = x-fr.width/2;
     int texty = y-fr.height/2;
 
@@ -49,7 +52,7 @@ void Tile::setUpSprite(){
             switch (i)
             {
                 case 0:
-                    text[i][j].setPosition(textx + w/4.2/2, texty + h/4.2 + h/11.6*(j*2+1));
+                    text[i][j].setPosition(textx + w/4.2 + w/11.6*(j*2+1), texty + h/4.2/2);
                     break;
                 case 1:
                     text[i][j].setPosition(textx + w - w/4/2, texty + h/4.2 + h/11.6*(j*2+1));
@@ -58,7 +61,7 @@ void Tile::setUpSprite(){
                     text[i][j].setPosition(textx + w/4.2 + w/11.6*(j*2+1), texty + h - h/4/2);
                     break;
                 case 3:
-                    text[i][j].setPosition(textx + w/4.2 + w/11.6*(j*2+1), texty + h/4.2/2);
+                    text[i][j].setPosition(textx + w/4.2/2, texty + h/4.2 + h/11.6*(j*2+1));
                     break;
                 default:
                     break;
@@ -67,8 +70,13 @@ void Tile::setUpSprite(){
     }
 }
 
+void Tile::setPosition(const sf::Vector2f &position){
+    rect.setPosition(position);
+    setText(position.x, position.y);
+}
+
 void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    target.draw(sprite);
+    target.draw(rect);
 
     for (int i=0; i<4; i++){
         for (int j=0; j<3; j++){
@@ -77,8 +85,8 @@ void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     }
 }
 
-sf::Sprite* Tile::getSprite(){
-    return &sprite;
+sf::RectangleShape* Tile::getRect(){
+    return &rect;
 }
 
 void Tile::turn(){
@@ -86,6 +94,14 @@ void Tile::turn(){
     vector<int> tmp = sides.back();
     sides.erase(sides.begin()+size);
     sides.insert(sides.begin(), tmp);
+    std::reverse(sides.at(2).begin(),sides.at(2).end());
+    std::reverse(sides.at(0).begin(),sides.at(0).end());
+    
+    for (int i=0; i<4; i++){
+        for (int j=0; j<3; j++){
+            text[i][j].setString(to_string(sides.at(i).at(j)));
+        }
+    }
 }
 
 vector<vector<int>> Tile::getSides(){

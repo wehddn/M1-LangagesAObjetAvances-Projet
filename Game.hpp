@@ -2,21 +2,23 @@
 #define GAME
 
 #include "Tile.hpp"
+#include "Board.hpp"
 
 #include<vector>
 
 using namespace std;
 
 class Game{
-    private:
-        vector<Tile> deck;
-        vector<vector<Tile*>> board;
-        int boardX; int boardY;
     public:
         Game();
-        Tile getTile();
-        void putTile(int x, int y, Tile* t);
-        vector<vector<Tile*>> getBoard();
+        Tile* getTile();
+        Board* getBoard();
+        void setDeck();
+    private:
+        vector<Tile*> deck;
+        Board* board;
+        int boardX; int boardY;
+        int deck_size = 100;
 };
 
 std::ostream& operator<< (std::ostream &out, Game &game);
