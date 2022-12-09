@@ -5,6 +5,32 @@
 
 #include "iostream"
 
+struct Camera
+{
+    sf::View view;
+    sf::Vector2f pos;
+    bool locked = false;
+
+    void lock(float x, float y)
+    {
+        pos.x = x;
+        pos.y = y;
+        locked = true;
+    }
+
+    void unlock() { locked = false; }
+
+    void move(float x, float y)
+    {
+        if (locked)
+        {
+            view.move(pos.x - x, pos.y - y);
+            pos.x = x;
+            pos.y = y;
+        }
+    }
+};
+
 int main()
 {
     Game g{};
@@ -12,7 +38,7 @@ int main()
     Tile displayedTile;
 
     bool lock_click;
-    bool key_click;
+    bool key_click_right;
     bool falsePlace;
     sf::RectangleShape* redRect = nullptr;
 
@@ -23,6 +49,9 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(windoww, windowh), "SFML works!");
 
+    Camera cam;
+    cam.view = window.getView();
+
     std::cout << "Start!\n";
     while (window.isOpen())
     {
@@ -31,6 +60,18 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            else if (event.type == sf::Event::MouseMoved)
+            {
+                cam.move(event.mouseMove.x, event.mouseMove.y);
+            }
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+            {
+                cam.lock(event.mouseButton.x, event.mouseButton.y);
+            }
+            else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+            {
+                cam.unlock();
+            }
         }
 
         window.clear();
@@ -53,7 +94,9 @@ int main()
         //apres un clic, on compare la position du clic avec les emplacements possibles pour la tuile
         if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && lock_click != true){
             lock_click = true;
-            sf::Vector2i position = sf::Mouse::getPosition(window);
+            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+            sf::Vector2f position = window.mapPixelToCoords(pixelPos);
+            
             int rawCounter=0; int colCounter=0;
             for(auto& row:b->getTiles()){
                 for(auto& col:row){
@@ -98,16 +141,18 @@ int main()
         
         //condition pour effectuer une action de clic une seule fois
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right){    
-            key_click = false;
+            key_click_right = false;
         }
 
         //on tourne un tuile apres avoir appuye sur la "fleches droite(???)"
-        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Right && key_click != true){
-            key_click = true;
+        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Right && key_click_right != true){
+            key_click_right = true;
             current_tile->turn();
             displayedTile = *current_tile;
             displayedTile.setPosition(sf::Vector2f(0,0));
         }
+
+        window.setView(cam.view);
 
         window.draw(*b);
         window.draw(displayedTile);
