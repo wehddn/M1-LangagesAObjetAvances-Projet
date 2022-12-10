@@ -147,12 +147,12 @@ int main()
 
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Z && zoom != true){
                 zoom = true;
-                cam.view.zoom(0.9f);
+                cam.view.zoom(1/0.9f);
             }
 
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::X && zoom != true){
                 zoom = true;
-                cam.view.zoom(1/0.9f);
+                cam.view.zoom(0.9f);
             }
         }
 
@@ -167,11 +167,14 @@ int main()
             displayedTile = *current_tile;
             displayedTile.setPosition(sf::Vector2f(0,0));
         }
-
+       
         window.setView(cam.view);
-
         window.draw(*b);
+
+        //fixer element (ne pas changer lors du zoom)
+        window.setView(window.getDefaultView());
         window.draw(displayedTile);
+        window.setView(cam.view);
 
         window.display();
 
