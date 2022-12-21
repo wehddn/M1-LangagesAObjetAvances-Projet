@@ -34,13 +34,17 @@ struct Camera
 
 int main()
 {
-    sf::RenderWindow windowM(sf::VideoMode(800,800), "MENU");
+//    sf::RenderWindow windowM(sf::VideoMode(800,800), "MENU");
 
-    Menu menu(windowM.getSize().x,windowM.getSize().y);
-    while(windowM.isOpen()){
+//    Menu menu(windowM.getSize().x,windowM.getSize().y);
+    Menu menu(800, 800);
 
-        
+    menu.menuLoop();
+
+/*    while(windowM.isOpen()){
+
         sf::Event event;
+        
 
         while(windowM.pollEvent(event)){
             switch (event.type)
@@ -70,6 +74,8 @@ int main()
                             
                             int windowh = 600;
                             int windoww = 800;
+
+                            windowM.close();
 
                             sf::RenderWindow window(sf::VideoMode(windoww, windowh), "DOMINO");
 
@@ -210,10 +216,11 @@ int main()
                 break;
             }
         }
-
-        windowM.clear();
+*/
+        
+        /*windowM.clear();
         menu.draw(windowM);
 
         windowM.display();
-    }
+    }*/
 }

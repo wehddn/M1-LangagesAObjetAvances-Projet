@@ -14,6 +14,7 @@ class Game{
         Tile* getTile();
         Board* getBoard();
         void setDeck();
+        void gameLoop();
     private:
         vector<Tile*> deck;
         Board* board;

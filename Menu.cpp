@@ -1,4 +1,8 @@
 #include "Menu.hpp"
+#include "Game.hpp"
+
+#include <iostream>
+using namespace std;
 
 Menu::Menu(float width, float height)
 {
@@ -47,5 +51,47 @@ void Menu::MoveDown(){
         menu[selectedItemIndex].setFillColor(sf::Color::White);
         selectedItemIndex++;
         menu[selectedItemIndex].setFillColor(sf::Color::Red);
+    }
+}
+
+void Menu::menuLoop(){
+    sf::RenderWindow windowM(sf::VideoMode(800,800), "MENU");
+    while(windowM.isOpen()){
+
+        sf::Event event;
+
+        while(windowM.pollEvent(event)){
+            switch (event.type)
+            {
+            case sf::Event::KeyReleased:
+                switch(event.key.code){
+                    case sf::Keyboard::Up:
+                        MoveUp();
+                        break;
+                    case sf::Keyboard::Down:
+                        MoveDown();
+                        break;
+
+                    case sf::Keyboard::Return:
+                        if(getPressedItem() == 0){
+                            Game g{};
+                            windowM.close();
+                            g.gameLoop();
+                            std::cout << "End DOMINO!\n";
+                            windowM.create(sf::VideoMode(800,800), "MENU");
+                        }
+                        break;
+                }
+                break;
+            case sf::Event::Closed:
+                windowM.close();
+                break;
+            }
+        }
+
+        windowM.clear();
+        draw(windowM);
+
+        windowM.display();
     }
 }
