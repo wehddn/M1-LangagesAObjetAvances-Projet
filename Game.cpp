@@ -86,16 +86,20 @@ void Game::setDeck()
     }
 }
 
+int Game::getDeckSize(){
+    return deck.size();
+}
+
 void Game::gameLoop()
 {
-    //Tile *current_tile = nullptr;
-    //Tile displayedTile;
-
     bool lock_click;
     bool key_click_right;
     bool falsePlace;
     bool zoom;
     bool throwOut;
+
+    bool end = false;
+
     sf::RectangleShape *redRect = nullptr;
 
     Board *board = getBoard();
@@ -133,6 +137,27 @@ void Game::gameLoop()
                 cam.unlock();
             }
 
+            // zoom view avec Z et X
+            if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Z || event.key.code == sf::Keyboard::X))
+            {
+                zoom = false;
+            }
+
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Z && zoom != true)
+            {
+                zoom = true;
+                cam.view.zoom(1 / 0.9f);
+            }
+
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::X && zoom != true)
+            {
+                zoom = true;
+                cam.view.zoom(0.9f);
+            }
+
+            if(end)
+                break;
+
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
             {
                 lock_click = false;
@@ -165,10 +190,15 @@ void Game::gameLoop()
                                 {
                                     current_player->addScore(board->getStepScore());
                                     bar.setScore(current_player_number, current_player->getScore());
-                                    current_player->setTile(nullptr);
-                                    falsePlace = false;
-                                    nextPlayer();
-                                    bar.displayNextPlayer(current_player_number);
+                                    end = (getDeckSize()<=0);
+                                    if(!end){
+                                        current_player->setTile(nullptr);
+                                        falsePlace = false;
+                                        nextPlayer();
+                                        bar.displayNextPlayer(current_player_number);
+                                    }
+                                    else
+                                        bar.setEndGame(players);
                                 }
                                 else
                                 {
@@ -215,24 +245,6 @@ void Game::gameLoop()
                 bar.setDisplayedTile(current_player->getTile());
             }
 
-            // zoom view avec Z et X
-            if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::Z || event.key.code == sf::Keyboard::X))
-            {
-                zoom = false;
-            }
-
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Z && zoom != true)
-            {
-                zoom = true;
-                cam.view.zoom(1 / 0.9f);
-            }
-
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::X && zoom != true)
-            {
-                zoom = true;
-                cam.view.zoom(0.9f);
-            }
-
             // on jete un tuile avec D
             if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::D))
             {
@@ -242,14 +254,16 @@ void Game::gameLoop()
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::D && throwOut != true)
             {
                 throwOut = true;
-                
-                current_player->setTile(nullptr);
-                nextPlayer();
-                bar.displayNextPlayer(current_player_number);
+                end = (getDeckSize()==0);
+                if(!end){
+                    current_player->setTile(nullptr);
+                    nextPlayer();
+                    bar.displayNextPlayer(current_player_number);
+                }
+                else
+                    bar.setEndGame(players);
             }
         }
-
-        window.clear();
 
         // on charge une tuile
         // on met à jour le plateau du jeu
@@ -262,6 +276,8 @@ void Game::gameLoop()
             //displayedTile.setPosition(sf::Vector2f(0, 0));
             bar.setDisplayedTile(current_player->getTile());
         }
+
+        window.clear();
 
         window.setView(cam.view);
         window.draw(*board);

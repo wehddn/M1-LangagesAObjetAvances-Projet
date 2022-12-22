@@ -9,6 +9,11 @@ Bar::Bar(float height, vector<Player*> players){
     rectBar.setOutlineThickness(3);
     rectBar.setOutlineColor(sf::Color::White);
 
+    rectEmpty.setSize(sf::Vector2f(tileh, tileh));
+    rectEmpty.setFillColor(sf::Color::Black);
+    rectEmpty.setOutlineThickness(3);
+    rectEmpty.setOutlineColor(sf::Color::White);
+
     playersNames = std::vector<sf::Text*>();
     playersScores = std::vector<sf::Text*>();
 
@@ -48,6 +53,13 @@ Bar::Bar(float height, vector<Player*> players){
     turn->setPosition(sf::Vector2f(4, barh - 3*22));
     turn->setString("Turn : ->");
     settings.push_back(turn);
+
+    float playersTextHeight = playersScores.at(players.size()-1)->getPosition().y;
+    float settingsTextHeight = settings.at(settings.size()-1)->getPosition().y;
+    float endGameHeight = playersTextHeight + (settingsTextHeight-playersTextHeight)/2;
+    endGameText = new sf::Text(*text);
+    endGameText->setPosition(sf::Vector2f(4, endGameHeight));
+    endGameText->setString("Game Over!");
 }
 
 void Bar::setDisplayedTile(Tile* t){
@@ -77,9 +89,19 @@ void Bar::displayNextPlayer(int current_player_number){
 
 }
 
+void Bar::setEndGame(std::vector<Player*> players){
+    endGame = true;
+    
+}
+
 void Bar::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(rectBar);
-    target.draw(displayedTile);
+
+    if(!endGame)
+        target.draw(displayedTile);
+    else
+        target.draw(rectEmpty);
+
     for(auto& text:playersNames){
         target.draw(*text);
     }
@@ -89,5 +111,9 @@ void Bar::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
     for(auto& text:settings){
         target.draw(*text);
+    }
+    
+    if(endGame){
+        target.draw(*endGameText);
     }
 }
