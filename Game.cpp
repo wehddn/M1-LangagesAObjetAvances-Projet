@@ -106,6 +106,7 @@ void Game::gameLoop()
     sf::RenderWindow window(sf::VideoMode(windoww, windowh), "DOMINO");
 
     Bar bar(windowh, players);
+    bar.displayNextPlayer(0);
 
     Camera cam;
     cam.view = window.getView();
@@ -167,6 +168,7 @@ void Game::gameLoop()
                                     current_player->setTile(nullptr);
                                     falsePlace = false;
                                     nextPlayer();
+                                    bar.displayNextPlayer(current_player_number);
                                 }
                                 else
                                 {
@@ -210,9 +212,7 @@ void Game::gameLoop()
             {
                 key_click_right = true;
                 current_player->getTile()->turn();
-                //displayedTile = *current_tile;
                 bar.setDisplayedTile(current_player->getTile());
-                //displayedTile.setPosition(sf::Vector2f(0, 0));
             }
 
             // zoom view avec Z et X
@@ -245,6 +245,7 @@ void Game::gameLoop()
                 
                 current_player->setTile(nullptr);
                 nextPlayer();
+                bar.displayNextPlayer(current_player_number);
             }
         }
 

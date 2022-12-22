@@ -60,6 +60,23 @@ void Bar::setScore(int player, int score){
     playersScores.at(player)->setString(to_string(score));
 }
 
+void Bar::displayNextPlayer(int current_player_number){
+
+    int previous_player_number = 0;
+    if (current_player_number == 0)
+        previous_player_number = int(playersNames.size())-1;
+    else 
+        previous_player_number = current_player_number - 1;
+    cout << to_string(previous_player_number) << " " << to_string(current_player_number) << " " << playersNames.size() << endl;
+
+    playersScores.at(previous_player_number)->setFillColor(sf::Color::White);
+    playersNames.at(previous_player_number)->setFillColor(sf::Color::White);
+
+    playersScores.at(current_player_number)->setFillColor(sf::Color::Green);
+    playersNames.at(current_player_number)->setFillColor(sf::Color::Green);
+
+}
+
 void Bar::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(rectBar);
     target.draw(displayedTile);

@@ -12,6 +12,7 @@ class Bar : public sf::Drawable {
         Bar(float barw, vector<Player*>);
         void setDisplayedTile(Tile*);
         void setScore(int player, int score);
+        void displayNextPlayer(int current_player_number);
     private:
         Tile displayedTile;
         sf::RectangleShape rectBar;
