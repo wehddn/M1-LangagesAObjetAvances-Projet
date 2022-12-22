@@ -32,11 +32,31 @@ Game::Game()
 {
     board = new Board();
     setDeck();
+    setPlayers();
+
     Cell* c = getBoard()->getTiles().at(0).at(0);
     Tile* current_tile = getTile();
     board->updateBoard();
     board->putTile(0, 0, c, current_tile);
     board->updateBoard();
+}
+
+void Game::setPlayers(){
+    for(int i=0; i<playersNumbers; i++){    
+        Player* p = new Player();
+        string name = "Player " + to_string(i+1);
+        p->setName(name);
+        players.push_back(p);
+    }
+    current_player = players[0];
+}
+
+void Game::nextPlayer(){
+    if (current_player_number == int(players.size())-1)
+        current_player_number = 0;
+    else 
+        current_player_number += 1;
+    current_player = players[current_player_number];
 }
 
 Tile *Game::getTile()
@@ -64,7 +84,7 @@ void Game::setDeck()
 
 void Game::gameLoop()
 {
-    Tile *current_tile = nullptr;
+    //Tile *current_tile = nullptr;
     //Tile displayedTile;
 
     bool lock_click;
@@ -83,16 +103,11 @@ void Game::gameLoop()
 
     Bar bar(windoww);
 
-    //sf::RectangleShape bar2(sf::Vector2f(windoww, 50));
-    //bar2.setFillColor(sf::Color::Transparent);
-    //bar2.setOutlineThickness(3);
-    //bar2.setOutlineColor(sf::Color::White);
-
-
     Camera cam;
     cam.view = window.getView();
 
     std::cout << "Start DOMINO!\n";
+    
     while (window.isOpen())
     {
         sf::Event event;
@@ -141,10 +156,13 @@ void Game::gameLoop()
                             // sinon, on mis l'emplacement sélectionné en rouge
                             if (r != nullptr && r->getGlobalBounds().contains(position.x, position.y))
                             {
-                                if (board->putTile(rawCounter, colCounter, col, current_tile))
+                                if (board->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
-                                    current_tile = nullptr;
+                                    current_player->addScore(board->getStepScore());
+                                    cout << current_player->getName() << " " << to_string(current_player->getScore()) << endl;
+                                    current_player->setTile(nullptr);
                                     falsePlace = false;
+                                    nextPlayer();
                                 }
                                 else
                                 {
@@ -187,9 +205,9 @@ void Game::gameLoop()
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Right && key_click_right != true)
             {
                 key_click_right = true;
-                current_tile->turn();
+                current_player->getTile()->turn();
                 //displayedTile = *current_tile;
-                bar.setDisplayedTile(current_tile);
+                bar.setDisplayedTile(current_player->getTile());
                 //displayedTile.setPosition(sf::Vector2f(0, 0));
             }
 
@@ -221,9 +239,10 @@ void Game::gameLoop()
             {
                 throwOut = true;
                 
-                current_tile = getTile();
+                
+                current_player->setTile(getTile()); //TODO
                 board->updateBoard();
-                bar.setDisplayedTile(current_tile);
+                bar.setDisplayedTile(current_player->getTile());
             }
         }
 
@@ -231,14 +250,14 @@ void Game::gameLoop()
 
         // on charge une tuile
         // on met à jour le plateau du jeu
-        if (current_tile == nullptr)
+        if (current_player->getTile() == nullptr)
         {
-            current_tile = getTile();
+            current_player->setTile(getTile());
             board->updateBoard();
             // affichage de la tuile suivante dans le coin
             //displayedTile = *current_tile;
             //displayedTile.setPosition(sf::Vector2f(0, 0));
-            bar.setDisplayedTile(current_tile);
+            bar.setDisplayedTile(current_player->getTile());
         }
 
         window.setView(cam.view);

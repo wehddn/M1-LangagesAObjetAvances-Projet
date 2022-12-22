@@ -95,12 +95,16 @@ bool Board::checkSides(int x, int y, Tile* t){
         }
     }
 
-    cout << result << endl;
+    stepScore = result;
     return true;
 }
 
 int Board::sideScore(vector<int> side){
     return side.at(0) + side.at(1) + side.at(2);
+}
+
+int Board::getStepScore(){
+    return stepScore;
 }
 
 void Board::updateBoard(){

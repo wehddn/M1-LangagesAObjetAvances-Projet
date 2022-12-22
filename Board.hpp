@@ -17,6 +17,7 @@ class Board : public sf::Drawable {
         void updateBoard();
         vector<vector<Cell*>> getTiles();
         int getTileSize();
+        int getStepScore();
     private:
         vector<vector<Cell*>> board;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -27,6 +28,7 @@ class Board : public sf::Drawable {
         int recth = 120;
         bool checkSides(int x, int y, Tile* t);
         int sideScore(vector<int> side);
+        int stepScore;
 };
 
 #endif
