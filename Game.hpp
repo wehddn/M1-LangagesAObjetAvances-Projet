@@ -19,12 +19,13 @@ class Game{
         void setPlayers();
         void nextPlayer();
         void gameLoop();
+        int getPlayersNumber();
     private:
         vector<Tile*> deck;
         Board* board;
         int boardX; int boardY;
         int deck_size = 100;
-        int playersNumbers = 2;
+        int playersNumber = 2;
         int current_player_number = 0;
         vector<Player*> players;
         Player *current_player;

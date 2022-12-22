@@ -42,7 +42,7 @@ Game::Game()
 }
 
 void Game::setPlayers(){
-    for(int i=0; i<playersNumbers; i++){    
+    for(int i=0; i<playersNumber; i++){    
         Player* p = new Player();
         string name = "Player " + to_string(i+1);
         p->setName(name);
@@ -57,6 +57,10 @@ void Game::nextPlayer(){
     else 
         current_player_number += 1;
     current_player = players[current_player_number];
+}
+
+int Game::getPlayersNumber(){
+    return playersNumber;
 }
 
 Tile *Game::getTile()
@@ -101,7 +105,7 @@ void Game::gameLoop()
 
     sf::RenderWindow window(sf::VideoMode(windoww, windowh), "DOMINO");
 
-    Bar bar(windoww);
+    Bar bar(windowh, players);
 
     Camera cam;
     cam.view = window.getView();
@@ -159,7 +163,7 @@ void Game::gameLoop()
                                 if (board->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
                                     current_player->addScore(board->getStepScore());
-                                    cout << current_player->getName() << " " << to_string(current_player->getScore()) << endl;
+                                    bar.setScore(current_player_number, current_player->getScore());
                                     current_player->setTile(nullptr);
                                     falsePlace = false;
                                     nextPlayer();
@@ -239,10 +243,8 @@ void Game::gameLoop()
             {
                 throwOut = true;
                 
-                
-                current_player->setTile(getTile()); //TODO
-                board->updateBoard();
-                bar.setDisplayedTile(current_player->getTile());
+                current_player->setTile(nullptr);
+                nextPlayer();
             }
         }
 
