@@ -12,7 +12,7 @@ using namespace std;
 
 class Game{
     public:
-        Game();
+        Game(int settings[2]);
         Tile* getTile();
         Board* getBoard();
         void setDeck();
@@ -30,6 +30,7 @@ class Game{
         int current_player_number = 0;
         vector<Player*> players;
         Player *current_player;
+        int tileValue;
 };
 
 std::ostream& operator<< (std::ostream &out, Game &game);

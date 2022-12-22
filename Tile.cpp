@@ -1,18 +1,23 @@
 #include "Tile.hpp"
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
-Tile::Tile(){
+Tile::Tile(int tileValue){
+    tileValue++;
     for(int i=0; i<4; i++)
     {
         sides.push_back(std::vector<int>());
         for(int j=0; j<3; j++)
         {    
-            sides[i].push_back((rand() % 2));
+            sides[i].push_back((rand() % (tileValue)));
         }
     }
     setUpRect();
 }
+
+Tile::Tile(){};
 
 void Tile::setUpRect(){
     int recth = 120;    //TODO modifier

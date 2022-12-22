@@ -9,23 +9,54 @@ Menu::Menu(float width, float height)
     if(!font.loadFromFile("arial.TTF")){
         // handle error
     }
+
+    float menuHeight = height/(MAX_NUMBER_OF_ITEMS +1); 
+
     menu[0].setFont(font);
     menu[0].setFillColor(sf::Color::Red);
     menu[0].setString("Domino");
-    menu[0].setPosition(sf::Vector2f(width / 2,height/(MAX_NUMBER_OF_ITEMS +1) *1));
+    menu[0].setPosition(sf::Vector2f(width / 4,menuHeight *1));
 
     menu[1].setFont(font);
     menu[1].setFillColor(sf::Color::White);
     menu[1].setString("Trax");
-    menu[1].setPosition(sf::Vector2f(width / 2,height/(MAX_NUMBER_OF_ITEMS +1) *2));
+    menu[1].setPosition(sf::Vector2f(width / 4,menuHeight *2));
 
     menu[2].setFont(font);
     menu[2].setFillColor(sf::Color::White);
     menu[2].setString("Carcassonne");
-    menu[2].setPosition(sf::Vector2f(width / 2,height/(MAX_NUMBER_OF_ITEMS +1) *3));
-
+    menu[2].setPosition(sf::Vector2f(width / 4,menuHeight *3));
 
     selectedItemIndex = 0;
+
+    dominoSettingsValues[0] = 2;
+    dominoSettingsValues[1] = 20;
+    dominoSettingsValues[2] = 2;
+
+    float settingsWidth = width / 4 + menu[0].getLocalBounds().width + 30;
+    
+    dominoSettingsText[0].setFont(font);
+    dominoSettingsText[0].setCharacterSize(20);
+    dominoSettingsText[0].setFillColor(sf::Color::White);
+    dominoSettingsText[0].setString("Players : " + to_string(dominoSettingsValues[0]));
+    dominoSettingsText[0].setPosition(sf::Vector2f(settingsWidth, menuHeight + 8));
+
+    settingsWidth += dominoSettingsText[0].getLocalBounds().width + 30;
+
+    dominoSettingsText[1].setFont(font);
+    dominoSettingsText[1].setCharacterSize(20);
+    dominoSettingsText[1].setFillColor(sf::Color::White);
+    dominoSettingsText[1].setString("Deck size : " + to_string(dominoSettingsValues[1]));
+    dominoSettingsText[1].setPosition(sf::Vector2f(settingsWidth, menuHeight + 8)); 
+
+    settingsWidth += dominoSettingsText[1].getLocalBounds().width + 30;
+
+    dominoSettingsText[2].setFont(font);
+    dominoSettingsText[2].setCharacterSize(20);
+    dominoSettingsText[2].setFillColor(sf::Color::White);
+    dominoSettingsText[2].setString("Max value of tile : " + to_string(dominoSettingsValues[2]));
+    dominoSettingsText[2].setPosition(sf::Vector2f(settingsWidth, menuHeight + 8)); 
+
 }
 
 Menu::~Menu(){
@@ -36,23 +67,76 @@ void Menu::draw(sf::RenderWindow &window){
     for(int i=0;i< MAX_NUMBER_OF_ITEMS;i++){
         window.draw(menu[i]);
     }
+    for(int i=0;i< DOMINO_SETTINGS_NUMBER;i++){
+        window.draw(dominoSettingsText[i]);
+    }
 }
 
 void Menu::MoveUp(){
-    if((selectedItemIndex -1 >= 0)){
+    if((selectedItemIndex -1 >= 0) && status=="menu"){
         menu[selectedItemIndex].setFillColor(sf::Color::White);
         selectedItemIndex--;
         menu[selectedItemIndex].setFillColor(sf::Color::Red);
+    } else if(selectedItemIndex == 0 && status == "domino"){
+        if(dominoSettingsValues[0] < 6)
+            dominoSettingsValues[0]++;
+        dominoSettingsText[0].setString("Players : " + to_string(dominoSettingsValues[0]));
+    } else if(selectedItemIndex == 1 && status == "domino"){
+        if(dominoSettingsValues[1] < 99)
+            dominoSettingsValues[1]++;
+        dominoSettingsText[1].setString("Deck size : " + to_string(dominoSettingsValues[1]));
+    } else if(selectedItemIndex == 2 && status == "domino"){
+        if(dominoSettingsValues[2] < 9)
+            dominoSettingsValues[2]++;
+        dominoSettingsText[2].setString("Max value of tile : " + to_string(dominoSettingsValues[2]));
     }
 }
 
 void Menu::MoveDown(){
-    if((selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)){
+    if((selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS) && status=="menu"){
         menu[selectedItemIndex].setFillColor(sf::Color::White);
         selectedItemIndex++;
         menu[selectedItemIndex].setFillColor(sf::Color::Red);
+    } else if(selectedItemIndex == 0 && status == "domino"){
+        if(dominoSettingsValues[0] > 2)
+            dominoSettingsValues[0]--;
+        dominoSettingsText[0].setString("Players : " + to_string(dominoSettingsValues[0]));
+    } else if(selectedItemIndex == 1 && status == "domino"){
+        if(dominoSettingsValues[1] > 10)
+            dominoSettingsValues[1]--;
+        dominoSettingsText[1].setString("Deck size : " + to_string(dominoSettingsValues[1]));
+    } else if(selectedItemIndex == 2 && status == "domino"){
+        if(dominoSettingsValues[2] > 1)
+            dominoSettingsValues[2]--;
+        dominoSettingsText[2].setString("Max value of tile : " + to_string(dominoSettingsValues[2]));
     }
 }
+
+void Menu::MoveRight(){
+    if((selectedItemIndex == 0) && status=="menu"){
+        menu[0].setFillColor(sf::Color::White);
+        dominoSettingsText[0].setFillColor(sf::Color::Red);
+        status = "domino";
+    }else if((selectedItemIndex + 1 < DOMINO_SETTINGS_NUMBER) && status == "domino" ){
+        dominoSettingsText[selectedItemIndex].setFillColor(sf::Color::White);
+        selectedItemIndex++;
+        dominoSettingsText[selectedItemIndex].setFillColor(sf::Color::Red);
+    }
+}
+
+void Menu::MoveLeft(){
+    if((selectedItemIndex == 0) && status=="domino"){
+        menu[0].setFillColor(sf::Color::Red);
+        dominoSettingsText[0].setFillColor(sf::Color::White);
+        status = "menu";
+    }else if((selectedItemIndex -1 >= 0) && status == "domino" ){
+        dominoSettingsText[selectedItemIndex].setFillColor(sf::Color::White);
+        selectedItemIndex--;
+        dominoSettingsText[selectedItemIndex].setFillColor(sf::Color::Red);
+    }
+}
+
+
 
 void Menu::menuLoop(){
     sf::RenderWindow windowM(sf::VideoMode(800,800), "MENU");
@@ -71,10 +155,16 @@ void Menu::menuLoop(){
                     case sf::Keyboard::Down:
                         MoveDown();
                         break;
+                    case sf::Keyboard::Left:
+                        MoveLeft();
+                        break;
+                    case sf::Keyboard::Right:
+                        MoveRight();
+                        break;
 
                     case sf::Keyboard::Return:
-                        if(getPressedItem() == 0){
-                            Game g{};
+                        if(getPressedItem() == 0 && status=="menu"){
+                            Game g(dominoSettingsValues);
                             windowM.close();
                             g.gameLoop();
                             std::cout << "End DOMINO!\n";

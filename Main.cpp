@@ -8,9 +8,10 @@
 
 int main()
 {
-    //Menu menu(800, 800);
-    //menu.menuLoop();
+    srand(time(NULL));
+    Menu menu(800, 800);
+    menu.menuLoop();
 
-    Game g{};
-    g.gameLoop();
+    //Game g{};
+    //g.gameLoop();
 }

@@ -28,8 +28,12 @@ struct Camera
     }
 };
 
-Game::Game()
+Game::Game(int settings[2])
 {
+    playersNumber = settings[0];
+    deck_size = settings[1];
+    tileValue = settings[2];
+
     board = new Board();
     setDeck();
     setPlayers();
@@ -80,7 +84,7 @@ void Game::setDeck()
     int size = board->getTileSize();
     for (int i = 0; i < deck_size; i++)
     {
-        Tile *t = new Tile();
+        Tile *t = new Tile(tileValue);
         t->setPosition(sf::Vector2f(size, size));
         deck.push_back(t);
     }

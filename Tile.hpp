@@ -10,6 +10,7 @@ using namespace std;
 
 class Tile : public sf::Drawable {
     public:
+        Tile(int tileValue);
         Tile();
         void turn();
         vector<vector<int>> getSides();
