@@ -8,7 +8,7 @@ Tile::Tile(){
         sides.push_back(std::vector<int>());
         for(int j=0; j<3; j++)
         {    
-            sides[i].push_back((rand() % 3));
+            sides[i].push_back((rand() % 2));
         }
     }
     setUpRect();

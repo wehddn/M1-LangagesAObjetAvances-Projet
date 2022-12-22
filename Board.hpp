@@ -26,6 +26,7 @@ class Board : public sf::Drawable {
         int boardw = 800;
         int recth = 120;
         bool checkSides(int x, int y, Tile* t);
+        int sideScore(vector<int> side);
 };
 
 #endif

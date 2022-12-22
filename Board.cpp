@@ -49,11 +49,15 @@ bool Board::putTile(int x, int y, Cell* c, Tile* t){
 }
 
 bool Board::checkSides(int x, int y, Tile* t){
+    int result = 0;
+
     if(y>0){
         if(board[x][y-1]!=nullptr){
             if(board[x][y-1]->getTile()!=nullptr){
                 if(t->getSides().at(0)!=board[x][y-1]->getTile()->getSides().at(2))
                     return false;
+                else
+                    result += sideScore(t->getSides().at(0));
             }
         }
     }
@@ -63,6 +67,8 @@ bool Board::checkSides(int x, int y, Tile* t){
             if(board[x][y+1]->getTile()!=nullptr){
                 if(t->getSides().at(2)!=board[x][y+1]->getTile()->getSides().at(0))
                     return false;
+                else
+                    result += sideScore(t->getSides().at(2));
             }
         }
     }
@@ -72,6 +78,8 @@ bool Board::checkSides(int x, int y, Tile* t){
             if(board[x-1][y]->getTile()!=nullptr){
                 if(t->getSides().at(3)!=board[x-1][y]->getTile()->getSides().at(1))
                     return false;
+                else
+                    result += sideScore(t->getSides().at(3));
             }
         }
     }
@@ -81,10 +89,18 @@ bool Board::checkSides(int x, int y, Tile* t){
             if(board[x+1][y]->getTile()!=nullptr){
                 if(t->getSides().at(1)!=board[x+1][y]->getTile()->getSides().at(3))
                     return false;
+                else
+                    result += sideScore(t->getSides().at(1));
             }
         }
     }
+
+    cout << result << endl;
     return true;
+}
+
+int Board::sideScore(vector<int> side){
+    return side.at(0) + side.at(1) + side.at(2);
 }
 
 void Board::updateBoard(){

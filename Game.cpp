@@ -32,6 +32,11 @@ Game::Game()
 {
     board = new Board();
     setDeck();
+    Cell* c = getBoard()->getTiles().at(0).at(0);
+    Tile* current_tile = getTile();
+    board->updateBoard();
+    board->putTile(0, 0, c, current_tile);
+    board->updateBoard();
 }
 
 Tile *Game::getTile()
@@ -60,20 +65,29 @@ void Game::setDeck()
 void Game::gameLoop()
 {
     Tile *current_tile = nullptr;
-    Tile displayedTile;
+    //Tile displayedTile;
 
     bool lock_click;
     bool key_click_right;
     bool falsePlace;
     bool zoom;
+    bool throwOut;
     sf::RectangleShape *redRect = nullptr;
 
-    Board *b = getBoard();
+    Board *board = getBoard();
 
     int windowh = 600;
     int windoww = 800;
 
     sf::RenderWindow window(sf::VideoMode(windoww, windowh), "DOMINO");
+
+    Bar bar(windoww);
+
+    //sf::RectangleShape bar2(sf::Vector2f(windoww, 50));
+    //bar2.setFillColor(sf::Color::Transparent);
+    //bar2.setOutlineThickness(3);
+    //bar2.setOutlineColor(sf::Color::White);
+
 
     Camera cam;
     cam.view = window.getView();
@@ -113,7 +127,7 @@ void Game::gameLoop()
 
                 int rawCounter = 0;
                 int colCounter = 0;
-                for (auto &row : b->getTiles())
+                for (auto &row : board->getTiles())
                 {
                     for (auto &col : row)
                     {
@@ -127,7 +141,7 @@ void Game::gameLoop()
                             // sinon, on mis l'emplacement sélectionné en rouge
                             if (r != nullptr && r->getGlobalBounds().contains(position.x, position.y))
                             {
-                                if (b->putTile(rawCounter, colCounter, col, current_tile))
+                                if (board->putTile(rawCounter, colCounter, col, current_tile))
                                 {
                                     current_tile = nullptr;
                                     falsePlace = false;
@@ -158,7 +172,7 @@ void Game::gameLoop()
             {
                 if (redRect != nullptr)
                 {
-                    redRect->setOutlineColor(sf::Color::Green);
+                    redRect->setOutlineColor(sf::Color::Transparent);
                     redRect = nullptr;
                 }
             }
@@ -174,8 +188,9 @@ void Game::gameLoop()
             {
                 key_click_right = true;
                 current_tile->turn();
-                displayedTile = *current_tile;
-                displayedTile.setPosition(sf::Vector2f(0, 0));
+                //displayedTile = *current_tile;
+                bar.setDisplayedTile(current_tile);
+                //displayedTile.setPosition(sf::Vector2f(0, 0));
             }
 
             // zoom view avec Z et X
@@ -195,6 +210,21 @@ void Game::gameLoop()
                 zoom = true;
                 cam.view.zoom(0.9f);
             }
+
+            // on jete un tuile avec D
+            if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::D))
+            {
+                throwOut = false;
+            }
+
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::D && throwOut != true)
+            {
+                throwOut = true;
+                
+                current_tile = getTile();
+                board->updateBoard();
+                bar.setDisplayedTile(current_tile);
+            }
         }
 
         window.clear();
@@ -204,18 +234,20 @@ void Game::gameLoop()
         if (current_tile == nullptr)
         {
             current_tile = getTile();
-            b->updateBoard();
+            board->updateBoard();
             // affichage de la tuile suivante dans le coin
-            displayedTile = *current_tile;
-            displayedTile.setPosition(sf::Vector2f(0, 0));
+            //displayedTile = *current_tile;
+            //displayedTile.setPosition(sf::Vector2f(0, 0));
+            bar.setDisplayedTile(current_tile);
         }
 
         window.setView(cam.view);
-        window.draw(*b);
+        window.draw(*board);
 
         // fixer element (ne pas changer lors du zoom)
         window.setView(window.getDefaultView());
-        window.draw(displayedTile);
+        //window.draw(bar2);
+        window.draw(bar);
         window.setView(cam.view);
 
         window.display();

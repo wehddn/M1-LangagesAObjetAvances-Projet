@@ -3,6 +3,7 @@
 
 #include "Tile.hpp"
 #include "Board.hpp"
+#include "Bar.hpp"
 
 #include<vector>
 
