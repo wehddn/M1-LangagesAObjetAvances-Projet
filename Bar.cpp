@@ -14,39 +14,40 @@ Bar::Bar(float height, vector<Player*> players){
 
     font.loadFromFile("./src/Gargi.ttf");
 
+    sf::Text* text = new sf::Text();
+    text->setFont(font);
+    text->setCharacterSize(17);
+    text->setFillColor(sf::Color::White);
+    text->setStyle(sf::Text::Underlined);
+
     for (int i=0; i<int(players.size()); i++){
-        sf::Text* text = new sf::Text();
-        text->setFont(font);
-        text->setCharacterSize(17);
-        text->setFillColor(sf::Color::White);
-        text->setStyle(sf::Text::Underlined);
-        text->setPosition(sf::Vector2f(4, barw+3 + i*21));
-        text->setString(players.at(i)->getName() + " : ");
-        playersNames.push_back(text);
+        sf::Text* text1 = new sf::Text(*text);
+        text1->setPosition(sf::Vector2f(4, tileh+3 + i*21));
+        text1->setString(players.at(i)->getName() + " : ");
+        playersNames.push_back(text1);
     }
 
     for (int i=0; i<int(players.size()); i++){
-        sf::Text* text = new sf::Text();
-        text->setFont(font);
-        text->setCharacterSize(17);
-        text->setFillColor(sf::Color::White);
-        text->setStyle(sf::Text::Underlined);
-        text->setPosition(sf::Vector2f(90, barw+3 + i*21));
-        text->setString("0");
-        playersScores.push_back(text);
+        sf::Text* text1 = new sf::Text(*text);
+        text1->setPosition(sf::Vector2f(90, tileh+3 + i*21));
+        text1->setString("0");
+        playersScores.push_back(text1);
     }
-    
 
-/*    font.loadFromFile("./src/Gargi.ttf");
+    sf::Text* zoom = new sf::Text(*text);
+    zoom->setPosition(sf::Vector2f(4, barh - 1*22));
+    zoom->setString("Zoom : Z/X");
+    settings.push_back(zoom);
 
-    text.setFont(font);
-    text.setCharacterSize(17);
-    text.setFillColor(sf::Color::White);
-    text.setStyle(sf::Text::Underlined);
-    text.setString("test");
-    
-    text.setPosition(sf::Vector2f(130, 5));*/
+    sf::Text* throwOut = new sf::Text(*text);
+    throwOut->setPosition(sf::Vector2f(4, barh - 2*22));
+    throwOut->setString("Throw out : D");
+    settings.push_back(throwOut);
 
+    sf::Text* turn = new sf::Text(*text);
+    turn->setPosition(sf::Vector2f(4, barh - 3*22));
+    turn->setString("Turn : ->");
+    settings.push_back(turn);
 }
 
 void Bar::setDisplayedTile(Tile* t){
@@ -67,7 +68,6 @@ void Bar::displayNextPlayer(int current_player_number){
         previous_player_number = int(playersNames.size())-1;
     else 
         previous_player_number = current_player_number - 1;
-    cout << to_string(previous_player_number) << " " << to_string(current_player_number) << " " << playersNames.size() << endl;
 
     playersScores.at(previous_player_number)->setFillColor(sf::Color::White);
     playersNames.at(previous_player_number)->setFillColor(sf::Color::White);
@@ -84,6 +84,10 @@ void Bar::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         target.draw(*text);
     }
     for(auto& text:playersScores){
+        target.draw(*text);
+    }
+
+    for(auto& text:settings){
         target.draw(*text);
     }
 }

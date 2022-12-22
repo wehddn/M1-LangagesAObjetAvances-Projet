@@ -12,15 +12,17 @@ class Bar : public sf::Drawable {
         Bar(float barw, vector<Player*>);
         void setDisplayedTile(Tile*);
         void setScore(int player, int score);
-        void displayNextPlayer(int current_player_number);
+        void displayNextPlayer(int current_player);
     private:
         Tile displayedTile;
         sf::RectangleShape rectBar;
         int barh; //TODO modifier
         int barw = 120;
+        int tileh = 120;
         sf::Font font;
         vector<sf::Text*> playersNames;
         vector<sf::Text*> playersScores;
+        vector<sf::Text*> settings;    
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
