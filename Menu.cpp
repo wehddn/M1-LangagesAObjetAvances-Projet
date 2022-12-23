@@ -164,10 +164,17 @@ void Menu::menuLoop(){
 
                     case sf::Keyboard::Return:
                         if(getPressedItem() == 0 && status=="menu"){
-                            Game g(dominoSettingsValues);
+                            GameDomino g(dominoSettingsValues);
                             windowM.close();
                             g.gameLoop();
                             std::cout << "End DOMINO!\n";
+                            windowM.create(sf::VideoMode(800,800), "MENU");
+                        }
+                        else if(getPressedItem() == 1 && status=="menu"){
+                            GameTrax g(dominoSettingsValues);
+                            windowM.close();
+                            g.gameLoop();
+                            std::cout << "End TRAX!\n";
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         break;

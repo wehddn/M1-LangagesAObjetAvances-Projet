@@ -28,9 +28,9 @@ struct Camera
     }
 };
 
-Game::Game(){};
+GameTrax::GameTrax(){};
 
-Game::Game(int settings[2])
+GameTrax::GameTrax(int settings[2])
 {
     playersNumber = settings[0];
     deck_size = settings[1];
@@ -41,13 +41,13 @@ Game::Game(int settings[2])
     setPlayers();
 
     Cell* c = getBoard()->getTiles().at(0).at(0);
-    Tile* current_tile = getTile();
+    TileTrax* current_tile = getTile();
     board->updateBoard();
     board->putTile(0, 0, c, current_tile);
     board->updateBoard();
 }
 
-void Game::setPlayers(){
+void GameTrax::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
         Player* p = new Player();
         string name = "Player " + to_string(i+1);
@@ -57,7 +57,7 @@ void Game::setPlayers(){
     current_player = players[0];
 }
 
-void Game::nextPlayer(){
+void GameTrax::nextPlayer(){
     if (current_player_number == int(players.size())-1)
         current_player_number = 0;
     else 
@@ -65,38 +65,38 @@ void Game::nextPlayer(){
     current_player = players[current_player_number];
 }
 
-int Game::getPlayersNumber(){
+int GameTrax::getPlayersNumber(){
     return playersNumber;
 }
 
-Tile *Game::getTile()
+TileTrax *GameTrax::getTile()
 {
-    Tile *r = deck.back();
+    TileTrax *r = deck.back();
     deck.pop_back();
     return r;
 }
 
-Board *Game::getBoard()
+Board *GameTrax::getBoard()
 {
     return board;
 }
 
-void Game::setDeck()
+void GameTrax::setDeck()
 {
     int size = board->getTileSize();
     for (int i = 0; i < deck_size; i++)
     {
-        Tile *t = new Tile(tileValue);
+        TileTrax *t = new TileTrax(tileValue);
         t->setPosition(sf::Vector2f(size, size));
         deck.push_back(t);
     }
 }
 
-int Game::getDeckSize(){
+int GameTrax::getDeckSize(){
     return deck.size();
 }
 
-void Game::gameLoop()
+void GameTrax::gameLoop()
 {
     bool lock_click;
     bool key_click_right;
@@ -244,6 +244,13 @@ void Game::gameLoop()
             }
 
             // on tourne un tuile apres avoir appuye sur la "fleches droite(???)"
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Up && key_click_right != true)
+            {
+                key_click_right = true;
+                current_player->getTile()->rotate();
+                bar.setDisplayedTile(current_player->getTile());
+            }
+            //rotate l'image
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Right && key_click_right != true)
             {
                 key_click_right = true;
@@ -298,7 +305,7 @@ void Game::gameLoop()
     }
 }
 
-std::ostream &operator<<(std::ostream &out, Game &game)
+std::ostream &operator<<(std::ostream &out, GameTrax &game)
 {
     string res = "";
     /*for(auto& row:game.getBoard()){

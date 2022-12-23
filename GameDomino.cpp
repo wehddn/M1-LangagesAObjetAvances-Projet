@@ -28,9 +28,9 @@ struct Camera
     }
 };
 
-Game::Game(){};
+GameDomino::GameDomino(){};
 
-Game::Game(int settings[2])
+GameDomino::GameDomino(int settings[2])
 {
     playersNumber = settings[0];
     deck_size = settings[1];
@@ -41,13 +41,13 @@ Game::Game(int settings[2])
     setPlayers();
 
     Cell* c = getBoard()->getTiles().at(0).at(0);
-    Tile* current_tile = getTile();
+    TileDomino* current_tile = getTile();
     board->updateBoard();
     board->putTile(0, 0, c, current_tile);
     board->updateBoard();
 }
 
-void Game::setPlayers(){
+void GameDomino::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
         Player* p = new Player();
         string name = "Player " + to_string(i+1);
@@ -57,7 +57,7 @@ void Game::setPlayers(){
     current_player = players[0];
 }
 
-void Game::nextPlayer(){
+void GameDomino::nextPlayer(){
     if (current_player_number == int(players.size())-1)
         current_player_number = 0;
     else 
@@ -65,38 +65,38 @@ void Game::nextPlayer(){
     current_player = players[current_player_number];
 }
 
-int Game::getPlayersNumber(){
+int GameDomino::getPlayersNumber(){
     return playersNumber;
 }
 
-Tile *Game::getTile()
+TileDomino *GameDomino::getTile()
 {
-    Tile *r = deck.back();
+    TileDomino *r = deck.back();
     deck.pop_back();
     return r;
 }
 
-Board *Game::getBoard()
+Board *GameDomino::getBoard()
 {
     return board;
 }
 
-void Game::setDeck()
+void GameDomino::setDeck()
 {
     int size = board->getTileSize();
     for (int i = 0; i < deck_size; i++)
     {
-        Tile *t = new Tile(tileValue);
+        TileDomino *t = new TileDomino(tileValue);
         t->setPosition(sf::Vector2f(size, size));
         deck.push_back(t);
     }
 }
 
-int Game::getDeckSize(){
+int GameDomino::getDeckSize(){
     return deck.size();
 }
 
-void Game::gameLoop()
+void GameDomino::gameLoop()
 {
     bool lock_click;
     bool key_click_right;
@@ -250,6 +250,7 @@ void Game::gameLoop()
                 current_player->getTile()->turn();
                 bar.setDisplayedTile(current_player->getTile());
             }
+            
 
             // on jete un tuile avec D
             if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::D))
@@ -298,7 +299,7 @@ void Game::gameLoop()
     }
 }
 
-std::ostream &operator<<(std::ostream &out, Game &game)
+std::ostream &operator<<(std::ostream &out, GameDomino &game)
 {
     string res = "";
     /*for(auto& row:game.getBoard()){
