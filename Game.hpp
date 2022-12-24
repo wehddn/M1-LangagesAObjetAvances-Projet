@@ -3,6 +3,7 @@
 
 #include "Tile.hpp"
 #include "Board.hpp"
+#include "BoardTrax.hpp"
 #include "Bar.hpp"
 #include "Player.hpp"
 
@@ -52,7 +53,7 @@ class GameDomino : public Game {
 class GameTrax : public Game{
 public :
         GameTrax();
-        Board* getBoard();
+        BoardTrax* getBoardTrax();
         TileTrax* getTile();
         int getDeckSize();
         void setPlayers();
@@ -62,6 +63,7 @@ public :
         void gameLoop();
     private :
         vector<TileTrax*> deck;
+        BoardTrax* boardTrax;
 };
 
 #endif

@@ -1,6 +1,6 @@
 CC= g++ -Wall -std=c++11 # compilateur + options
 CCO= $(CC) -c $<
-OBJECTS= Tile.o TileDomino.o TileTrax.o Cell.o Board.o Menu.o Bar.o Player.o Game.o GameDomino.o GameTrax.o Main.o # liste des objets intermédiaires
+OBJECTS= Tile.o TileDomino.o TileTrax.o Cell.o Board.o BoardTrax.o Menu.o Bar.o Player.o Game.o GameDomino.o GameTrax.o Main.o # liste des objets intermédiaires
 all : $(OBJECTS)
 	$(CC) -o go $(OBJECTS)
 Tile.o : Tile.cpp Tile.hpp
@@ -12,6 +12,8 @@ TileTrax.o : TileTrax.cpp Tile.hpp
 Cell.o : Cell.cpp Cell.hpp
 	$(CCO)
 Board.o : Board.cpp Board.hpp
+	$(CCO)
+BoardTrax.o : BoardTrax.cpp BoardTrax.hpp
 	$(CCO)
 Menu.o : Menu.cpp Menu.hpp
 	$(CCO)

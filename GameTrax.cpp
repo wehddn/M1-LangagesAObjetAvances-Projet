@@ -30,15 +30,15 @@ struct Camera
 
 GameTrax::GameTrax()
 {
-    board = new Board();
+    boardTrax = new BoardTrax();
     setDeck();
     setPlayers();
 
-    Cell* c = getBoard()->getTiles().at(0).at(0);
+    Cell* c = getBoardTrax()->getTiles().at(0).at(0);
     TileTrax* current_tile = getTile();
-    board->updateBoard();
-    board->putTile(0, 0, c, current_tile);
-    board->updateBoard();
+    boardTrax->updateBoard();
+    boardTrax->putTile(0, 0, c, current_tile);
+    boardTrax->updateBoard();
 }
 
 void GameTrax::setPlayers(){
@@ -70,14 +70,14 @@ TileTrax *GameTrax::getTile()
     return r;
 }
 
-Board *GameTrax::getBoard()
+BoardTrax *GameTrax::getBoardTrax()
 {
-    return board;
+    return boardTrax;
 }
 
 void GameTrax::setDeck()
 {
-    int size = board->getTileSize();
+    int size = boardTrax->getTileSize();
     for (int i = 0; i < deck_size; i++)
     {
         TileTrax *t = new TileTrax();
@@ -103,7 +103,7 @@ void GameTrax::gameLoop()
 
     sf::RectangleShape *redRect = nullptr;
 
-    Board *board = getBoard();
+    BoardTrax *boardTrax = getBoardTrax();
 
     int windowh = 600;
     int windoww = 800;
@@ -187,9 +187,9 @@ void GameTrax::gameLoop()
                             // sinon, on mis l'emplacement sélectionné en rouge
                             if (r != nullptr && r->getGlobalBounds().contains(position.x, position.y))
                             {
-                                if (board->putTile(rawCounter, colCounter, col, current_player->getTile()))
+                                if (boardTrax->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
-                                    current_player->addScore(board->getStepScore());
+                                    current_player->addScore(boardTrax->getStepScore());
                                     bar.setScore(current_player_number, current_player->getScore());
                                     end = (getDeckSize()<=0);
                                     if(!end){
@@ -282,7 +282,7 @@ void GameTrax::gameLoop()
         if (current_player->getTile() == nullptr)
         {
             current_player->setTile(getTile());
-            board->updateBoard();
+            boardTrax->updateBoard();
             // affichage de la tuile suivante dans le coin
             //displayedTile = *current_tile;
             //displayedTile.setPosition(sf::Vector2f(0, 0));
@@ -292,7 +292,7 @@ void GameTrax::gameLoop()
         window.clear();
 
         window.setView(cam.view);
-        window.draw(*board);
+        window.draw(*boardTrax);
 
         // fixer element (ne pas changer lors du zoom)
         window.setView(window.getDefaultView());
