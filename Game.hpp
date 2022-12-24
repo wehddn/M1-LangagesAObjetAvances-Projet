@@ -64,7 +64,4 @@ public :
         vector<TileTrax*> deck;
 };
 
-
-std::ostream& operator<< (std::ostream &out, Game &game);
-
 #endif

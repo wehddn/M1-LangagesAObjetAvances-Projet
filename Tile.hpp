@@ -57,6 +57,4 @@ class TileTrax : public Tile {
         string state = "head";
 };
 
-std::ostream& operator<< (std::ostream &out, Tile &tile);
-
 #endif

@@ -58,34 +58,3 @@ void TileTrax::rotate(){
 vector<vector<int>> TileTrax::getSides(){
     return sides;
 }
-
-std::ostream& operator<< (std::ostream &out, TileTrax &tile)
-{   string res = "";
-    vector<vector<int>> sides = tile.getSides(); 
-    for (int i=0; i<4; i++){
-        switch (i)
-        {
-        case 0:
-            res+= "up   : ";
-            break;
-        case 1:
-            res+= "right: ";
-            break;
-        case 2:
-            res+= "down : ";
-            break;
-        case 3:
-            res+= "left : ";
-            break;
-        default:
-            break;
-        }
-        for (int j=0; j<3; j++){
-            res += to_string(sides.at(i).at(j)) + " ";
-        }
-        res += "\n";
-    }
-
-    out << res;
-    return out;
-}

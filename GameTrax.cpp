@@ -303,19 +303,3 @@ void GameTrax::gameLoop()
         window.display();
     }
 }
-/*
-std::ostream &operator<<(std::ostream &out, GameTrax &game)
-{
-    string res = "";
-    for(auto& row:game.getBoard()){
-        for(auto& col:row){
-            if(col == nullptr)
-                cout << "null\n";
-            else
-                cout << *col;
-        }
-    }
-    out << "";
-    return out;
-}
-*/
