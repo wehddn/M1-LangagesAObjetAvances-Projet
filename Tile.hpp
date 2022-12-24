@@ -55,7 +55,7 @@ class TileTrax : public Tile {
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         void setText(float x, float y);
         void setUpRect();
-        vector<bool> directions;
+        vector<bool> directions; //n, b, n, b (head) ou b, n, n, b (tail)
         string state = "head";
 };
 

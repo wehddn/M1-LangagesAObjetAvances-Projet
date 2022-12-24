@@ -47,16 +47,20 @@ sf::RectangleShape* TileTrax::getRect(){
 void TileTrax::turn(){
     if(state == "head"){
         state = "tail";
-        getRect()->setTexture(this->head);
+        getRect()->setTexture(this->tail);
+        directions = {false, true, true, false};
     }
     else{
         state = "head";
-        getRect()->setTexture(this->tail);
+        getRect()->setTexture(this->head);
+        directions = {true, false, true, false};
     }
 }
 
 void TileTrax::rotate(){
     getRect()->rotate(90);
+    directions.insert(directions.begin(), directions[3]);
+    directions.pop_back();
 }
 
 vector<bool> TileTrax::getDirections(){

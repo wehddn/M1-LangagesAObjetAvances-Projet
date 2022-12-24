@@ -120,11 +120,9 @@ int BoardTrax::getStepScore(){
 
 void BoardTrax::updateBoard(){
     if(board.size()==1){
-        cout << "updateBoard 1" << endl;
         board.at(0).at(0)->newRect();
     }
     else{
-        cout << "updateBoard n" << endl;
         for(int i=0; i<boardX; i++){
             for(int j=0; j<boardY; j++){
                 if(board.at(i).at(j)!=nullptr){
