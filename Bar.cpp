@@ -64,7 +64,7 @@ Bar::Bar(float height, vector<Player*> players){
 
 void Bar::setDisplayedTile(Tile* t){
     displayedTile = *t;
-    displayedTile.setPosition(sf::Vector2f(0, 0));    
+    displayedTile.setPosition(sf::Vector2f(tileh/2, tileh/2));
     displayedTile.getRect()->setOutlineThickness(3);
     displayedTile.getRect()->setOutlineColor(sf::Color::White);
 }

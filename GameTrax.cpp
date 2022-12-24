@@ -33,12 +33,6 @@ GameTrax::GameTrax()
     boardTrax = new BoardTrax();
     setDeck();
     setPlayers();
-
-    Cell* c = getBoardTrax()->getTiles().at(0).at(0);
-    TileTrax* current_tile = getTile();
-    boardTrax->updateBoard();
-    boardTrax->putTile(0, 0, c, current_tile);
-    boardTrax->updateBoard();
 }
 
 void GameTrax::setPlayers(){
@@ -78,9 +72,13 @@ BoardTrax *GameTrax::getBoardTrax()
 void GameTrax::setDeck()
 {
     int size = boardTrax->getTileSize();
+    sf::Texture *textureH = new sf::Texture;
+    textureH->loadFromFile("./src/tileTraxH.png");
+    sf::Texture *textureT = new sf::Texture;
+    textureT->loadFromFile("./src/tileTraxT.png");
     for (int i = 0; i < deck_size; i++)
     {
-        TileTrax *t = new TileTrax();
+        TileTrax *t = new TileTrax(textureH, textureT);
         t->setPosition(sf::Vector2f(size, size));
         deck.push_back(t);
     }
@@ -97,7 +95,6 @@ void GameTrax::gameLoop()
     bool key_click_up;
     bool falsePlace;
     bool zoom;
-    bool throwOut;
 
     bool end = false;
 
@@ -173,7 +170,14 @@ void GameTrax::gameLoop()
 
                 int rawCounter = 0;
                 int colCounter = 0;
-                for (auto &row : board->getTiles())
+
+                if (boardTrax->getTiles().size()==1){
+                    float x = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().height;
+                    float y = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().width;
+                    boardTrax->getTiles().at(0).at(0)->getRect()->setPosition(sf::Vector2f(position.x, position.y));
+                }
+                
+                for (auto &row : boardTrax->getTiles())
                 {
                     for (auto &col : row)
                     {
@@ -255,25 +259,6 @@ void GameTrax::gameLoop()
                 key_click_up = true;
                 current_player->getTile()->turn();
                 bar.setDisplayedTile(current_player->getTile());
-            }
-
-            // on jete un tuile avec D
-            if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::D))
-            {
-                throwOut = false;
-            }
-
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::D && throwOut != true)
-            {
-                throwOut = true;
-                end = (getDeckSize()==0);
-                if(!end){
-                    current_player->setTile(nullptr);
-                    nextPlayer();
-                    bar.displayNextPlayer(current_player_number);
-                }
-                else
-                    bar.setEndGame(players);
             }
         }
 

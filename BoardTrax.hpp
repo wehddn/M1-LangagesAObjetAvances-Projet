@@ -27,6 +27,7 @@ class BoardTrax : public sf::Drawable {
         int boardw = 800;
         int recth = 120;
         bool checkSides(int x, int y, Tile* t);
+        bool checkSize(int x, int y);
         int sideScore(vector<int> side);
         int stepScore;
 };

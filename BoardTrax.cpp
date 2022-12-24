@@ -12,9 +12,13 @@ BoardTrax::BoardTrax(){
 bool BoardTrax::putTile(int x, int y, Cell* c, Tile* t){
     //on verifie les cotes des tuiles voisines
     //retourne false si on ne peut pas mettre une tuile
-    if(!checkSides(x, y, t))
+
+    if (!checkSize(x, y))
         return false;
-    
+
+    //if(!checkSides(x, y, t))
+    //    return false;
+
     t->setPosition(c->getRect()->getPosition());
     c->setTile(t);
     c->setRect(nullptr);
@@ -46,6 +50,13 @@ bool BoardTrax::putTile(int x, int y, Cell* c, Tile* t){
     }
 
     return true;
+}
+
+bool BoardTrax::checkSize(int x, int y){
+    if (x>8 || y>8 || (x==0 && boardX>9) || (y==0 && boardY>9))
+        return false;
+    else
+        return true;
 }
 
 bool BoardTrax::checkSides(int x, int y, Tile* t){
@@ -109,10 +120,11 @@ int BoardTrax::getStepScore(){
 
 void BoardTrax::updateBoard(){
     if(board.size()==1){
+        cout << "updateBoard 1" << endl;
         board.at(0).at(0)->newRect();
-        board.at(0).at(0)->getRect()->setPosition(boardw/2-recth/2, boardh/2-recth/2);
     }
     else{
+        cout << "updateBoard n" << endl;
         for(int i=0; i<boardX; i++){
             for(int j=0; j<boardY; j++){
                 if(board.at(i).at(j)!=nullptr){
@@ -143,6 +155,7 @@ void BoardTrax::setRectAtPositions(int i, int j, int x, int y){
     if(board.at(i).at(j)->getTile()==nullptr){
         board.at(i).at(j)->newRect();
         board.at(i).at(j)->getRect()->setPosition(sf::Vector2f(x, y));
+        board.at(i).at(j)->getRect()->setOrigin(sf::Vector2f(board.at(i).at(j)->getRect()->getLocalBounds().width, board.at(i).at(j)->getRect()->getLocalBounds().height)/2.f);
         board.at(i).at(j)->getRect()->setSize(sf::Vector2f(recth, recth));
     }
 }

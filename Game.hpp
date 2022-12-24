@@ -26,7 +26,7 @@ class Game{
         vector<Tile*> deck;
         Board* board;
         int boardX; int boardY;
-        int deck_size = 3;
+        int deck_size = 20;
         int playersNumber = 2;
         int current_player_number = 0;
         vector<Player*> players;

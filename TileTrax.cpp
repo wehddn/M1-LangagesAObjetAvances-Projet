@@ -4,7 +4,9 @@
 #include <cstdlib>
 #include <ctime>
 
-TileTrax::TileTrax(){
+TileTrax::TileTrax(sf::Texture *textureH, sf::Texture *textureT){
+    this->head = textureH;
+    this->tail = textureT;
     setUpRect();
 }
 
@@ -13,13 +15,15 @@ void TileTrax::setUpRect(){
     int recth = 120;    //TODO modifier
     getRect()->setSize(sf::Vector2f(recth, recth));
     font.loadFromFile("./src/Gargi.ttf");
-    sf::Texture *textureH = new sf::Texture;
-    textureH->loadFromFile("./src/tileTraxH.png");
-    this->head = textureH;
-    sf::Texture *textureT = new sf::Texture;
-    textureT->loadFromFile("./src/tileTraxT.png");
-    this->tail = textureT;
-    getRect()->setTexture(textureH);
+    //sf::Texture *textureH = new sf::Texture;
+    //textureH->loadFromFile("./src/tileTraxH.png");
+    //this->head = textureH;
+    //sf::Texture *textureT = new sf::Texture;
+    //textureT->loadFromFile("./src/tileTraxT.png");
+    //this->tail = textureT;
+    getRect()->setTexture(this->head);
+    getRect()->setOrigin(sf::Vector2f(getRect()->getLocalBounds().width, getRect()->getLocalBounds().height)/2.f);
+    directions = {true, false, true, false};
     
 }
 
@@ -55,6 +59,6 @@ void TileTrax::rotate(){
     getRect()->rotate(90);
 }
 
-vector<vector<int>> TileTrax::getSides(){
-    return sides;
+vector<bool> TileTrax::getDirections(){
+    return directions;
 }

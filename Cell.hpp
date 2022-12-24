@@ -19,7 +19,7 @@ class Cell : public sf::Drawable {
         sf::RectangleShape* getRect();
         Tile* getTile();
     private:
-        Tile* t;
+        Tile* t = nullptr;;
         sf::RectangleShape* rect;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         

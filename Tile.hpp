@@ -42,11 +42,12 @@ class TileDomino : public Tile {
 
 class TileTrax : public Tile {
     public:
-        TileTrax();
+        TileTrax(sf::Texture *textureH, sf::Texture *textureT);
         void rotate(); // tourner de 90°
         void turn(); // changer de sens
         sf::RectangleShape* getRect();
-        vector<vector<int>> getSides();
+        //vector<vector<int>> getSides();
+        vector<bool> getDirections();
         void setPosition(const sf::Vector2f &position);
     private:
         sf::Texture *head;
@@ -54,6 +55,7 @@ class TileTrax : public Tile {
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         void setText(float x, float y);
         void setUpRect();
+        vector<bool> directions;
         string state = "head";
 };
 
