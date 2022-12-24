@@ -4,20 +4,10 @@
 #include <cstdlib>
 #include <ctime>
 
-TileTrax::TileTrax(int tileValue){
-    tileValue++;
-    for(int i=0; i<4; i++)
-    {
-        sides.push_back(std::vector<int>());
-        for(int j=0; j<3; j++)
-        {    
-            sides[i].push_back((rand() % (tileValue)));
-        }
-    }
+TileTrax::TileTrax(){
     setUpRect();
 }
 
-TileTrax::TileTrax(){};
 
 void TileTrax::setUpRect(){
     int recth = 120;    //TODO modifier

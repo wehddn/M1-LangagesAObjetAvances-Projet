@@ -92,7 +92,7 @@ sf::RectangleShape* TileDomino::getRect(){
     return &rect;
 }
 
-void TileDomino::turn(){
+void TileDomino::rotate(){
     int size = sides.size()-1;
     vector<int> tmp = sides.back();
     sides.erase(sides.begin()+size);

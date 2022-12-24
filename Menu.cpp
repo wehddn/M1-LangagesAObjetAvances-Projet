@@ -171,7 +171,7 @@ void Menu::menuLoop(){
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         else if(getPressedItem() == 1 && status=="menu"){
-                            GameTrax g(dominoSettingsValues);
+                            GameTrax g{};
                             windowM.close();
                             g.gameLoop();
                             std::cout << "End TRAX!\n";

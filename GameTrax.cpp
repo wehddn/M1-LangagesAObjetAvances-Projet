@@ -28,14 +28,8 @@ struct Camera
     }
 };
 
-GameTrax::GameTrax(){};
-
-GameTrax::GameTrax(int settings[2])
+GameTrax::GameTrax()
 {
-    playersNumber = settings[0];
-    deck_size = settings[1];
-    tileValue = settings[2];
-
     board = new Board();
     setDeck();
     setPlayers();
@@ -86,7 +80,7 @@ void GameTrax::setDeck()
     int size = board->getTileSize();
     for (int i = 0; i < deck_size; i++)
     {
-        TileTrax *t = new TileTrax(tileValue);
+        TileTrax *t = new TileTrax();
         t->setPosition(sf::Vector2f(size, size));
         deck.push_back(t);
     }
@@ -100,6 +94,7 @@ void GameTrax::gameLoop()
 {
     bool lock_click;
     bool key_click_right;
+    bool key_click_up;
     bool falsePlace;
     bool zoom;
     bool throwOut;
@@ -121,7 +116,7 @@ void GameTrax::gameLoop()
     Camera cam;
     cam.view = window.getView();
 
-    std::cout << "Start DOMINO!\n";
+    std::cout << "Start TRAX!\n";
     
     while (window.isOpen())
     {
@@ -242,18 +237,22 @@ void GameTrax::gameLoop()
             {
                 key_click_right = false;
             }
-
             // on tourne un tuile apres avoir appuye sur la "fleches droite(???)"
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Up && key_click_right != true)
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Right && key_click_right != true)
             {
                 key_click_right = true;
                 current_player->getTile()->rotate();
                 bar.setDisplayedTile(current_player->getTile());
             }
-            //rotate l'image
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Right && key_click_right != true)
+
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up)
             {
-                key_click_right = true;
+                key_click_up = false;
+            }
+            //rotate l'image
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Up && key_click_up != true)
+            {
+                key_click_up = true;
                 current_player->getTile()->turn();
                 bar.setDisplayedTile(current_player->getTile());
             }
@@ -304,18 +303,19 @@ void GameTrax::gameLoop()
         window.display();
     }
 }
-
+/*
 std::ostream &operator<<(std::ostream &out, GameTrax &game)
 {
     string res = "";
-    /*for(auto& row:game.getBoard()){
+    for(auto& row:game.getBoard()){
         for(auto& col:row){
             if(col == nullptr)
                 cout << "null\n";
             else
                 cout << *col;
         }
-    }*/
+    }
     out << "";
     return out;
 }
+*/

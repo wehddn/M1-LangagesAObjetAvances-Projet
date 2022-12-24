@@ -52,7 +52,6 @@ class GameDomino : public Game {
 class GameTrax : public Game{
 public :
         GameTrax();
-        GameTrax(int settings[2]);
         Board* getBoard();
         TileTrax* getTile();
         int getDeckSize();

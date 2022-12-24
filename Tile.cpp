@@ -109,6 +109,8 @@ void Tile::turn(){
     }
 }
 
+void Tile::rotate(){}
+
 vector<vector<int>> Tile::getSides(){
     return sides;
 }

@@ -13,6 +13,7 @@ class Tile : public sf::Drawable {
         Tile(int tileValue);
         Tile();
         virtual void turn();
+        virtual void rotate();
         virtual vector<vector<int>> getSides();
         virtual sf::RectangleShape* getRect();
         virtual void setPosition(const sf::Vector2f &position);
@@ -29,7 +30,7 @@ class TileDomino : public Tile {
     public:
         TileDomino(int tileValue);
         TileDomino();
-        void turn();
+        void rotate();
         sf::RectangleShape* getRect();
         vector<vector<int>> getSides();
         void setPosition(const sf::Vector2f &position);
@@ -41,7 +42,6 @@ class TileDomino : public Tile {
 
 class TileTrax : public Tile {
     public:
-        TileTrax(int tileValue);
         TileTrax();
         void rotate(); // tourner de 90°
         void turn(); // changer de sens

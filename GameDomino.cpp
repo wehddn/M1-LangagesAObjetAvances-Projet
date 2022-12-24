@@ -247,7 +247,7 @@ void GameDomino::gameLoop()
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Right && key_click_right != true)
             {
                 key_click_right = true;
-                current_player->getTile()->turn();
+                current_player->getTile()->rotate();
                 bar.setDisplayedTile(current_player->getTile());
             }
             
