@@ -15,23 +15,8 @@ void Cell::setRect(sf::RectangleShape* newrect){
     rect = newrect;
 }
 
-void Cell::setTile(Tile* tile){
-    t = tile;
-}
-
 sf::RectangleShape* Cell::getRect(){
     return rect;
 }
 
-Tile* Cell::getTile(){
-    return t;
-}
-
-void Cell::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    if(t!=nullptr){
-        target.draw(*t);
-    }
-    else{
-        target.draw(*rect);
-    }
-}
+void Cell::draw(sf::RenderTarget& target, sf::RenderStates states) const {}

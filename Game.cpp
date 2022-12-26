@@ -32,7 +32,7 @@ Game::Game(){};
 
 Game::Game(int settings[2])
 {
-    playersNumber = settings[0];
+/*    playersNumber = settings[0];
     deck_size = settings[1];
     tileValue = settings[2];
 
@@ -44,25 +44,25 @@ Game::Game(int settings[2])
     Tile* current_tile = getTile();
     board->updateBoard();
     board->putTile(0, 0, c, current_tile);
-    board->updateBoard();
+    board->updateBoard();*/
 }
 
 void Game::setPlayers(){
-    for(int i=0; i<playersNumber; i++){    
+    /*for(int i=0; i<playersNumber; i++){    
         Player* p = new Player();
         string name = "Player " + to_string(i+1);
         p->setName(name);
         players.push_back(p);
     }
-    current_player = players[0];
+    current_player = players[0];*/
 }
 
 void Game::nextPlayer(){
-    if (current_player_number == int(players.size())-1)
+    /*if (current_player_number == int(players.size())-1)
         current_player_number = 0;
     else 
         current_player_number += 1;
-    current_player = players[current_player_number];
+    current_player = players[current_player_number];*/
 }
 
 int Game::getPlayersNumber(){
@@ -76,20 +76,15 @@ Tile *Game::getTile()
     return r;
 }
 
-Board *Game::getBoard()
-{
-    return board;
-}
-
 void Game::setDeck()
 {
-    int size = board->getTileSize();
+    /*int size = board->getTileSize();
     for (int i = 0; i < deck_size; i++)
     {
         Tile *t = new Tile(tileValue);
         t->setPosition(sf::Vector2f(size, size));
         deck.push_back(t);
-    }
+    }*/
 }
 
 int Game::getDeckSize(){
@@ -97,7 +92,7 @@ int Game::getDeckSize(){
 }
 
 void Game::gameLoop()
-{
+{/*
     bool lock_click;
     bool key_click_right;
     bool falsePlace;
@@ -108,7 +103,7 @@ void Game::gameLoop()
 
     sf::RectangleShape *redRect = nullptr;
 
-    Board *board = getBoard();
+    //Board *board = getBoard();
 
     int windowh = 600;
     int windoww = 800;
@@ -295,5 +290,5 @@ void Game::gameLoop()
         window.setView(cam.view);
 
         window.display();
-    }
+    }*/
 }

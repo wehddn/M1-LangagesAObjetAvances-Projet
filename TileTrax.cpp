@@ -48,11 +48,13 @@ void TileTrax::turn(){
     if(state == "head"){
         state = "tail";
         getRect()->setTexture(this->tail);
+        getRect()->setRotation(0);
         directions = {false, true, true, false};
     }
     else{
         state = "head";
         getRect()->setTexture(this->head);
+        getRect()->setRotation(0);
         directions = {true, false, true, false};
     }
 }

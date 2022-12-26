@@ -37,7 +37,7 @@ GameTrax::GameTrax()
 
 void GameTrax::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
-        Player* p = new Player();
+        PlayerTrax* p = new PlayerTrax();
         string name = "Player " + to_string(i+1);
         p->setName(name);
         players.push_back(p);
@@ -107,7 +107,7 @@ void GameTrax::gameLoop()
 
     sf::RenderWindow window(sf::VideoMode(windoww, windowh), "DOMINO");
 
-    Bar bar(windowh, players);
+    BarTrax bar(windowh, players);
     bar.displayNextPlayer(0);
 
     Camera cam;
@@ -172,8 +172,8 @@ void GameTrax::gameLoop()
                 int colCounter = 0;
 
                 if (boardTrax->getTiles().size()==1){
-                    float x = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().height;
-                    float y = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().width;
+                    //float x = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().height;
+                    //float y = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().width;
                     boardTrax->getTiles().at(0).at(0)->getRect()->setPosition(sf::Vector2f(position.x, position.y));
                 }
                 
@@ -193,8 +193,7 @@ void GameTrax::gameLoop()
                             {
                                 if (boardTrax->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
-                                    current_player->addScore(boardTrax->getStepScore());
-                                    bar.setScore(current_player_number, current_player->getScore());
+                                    boardTrax->checkPaths(rawCounter, colCounter, col);
                                     end = (getDeckSize()<=0);
                                     if(!end){
                                         current_player->setTile(nullptr);

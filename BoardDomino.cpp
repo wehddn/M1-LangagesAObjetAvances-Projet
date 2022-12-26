@@ -2,35 +2,31 @@
 
 #include <iostream>
 
-BoardTrax::BoardTrax(){
-    CellTrax* c = new CellTrax();
-    vector<CellTrax*> line(1, c);
+BoardDomino::BoardDomino(){
+    CellDomino* c = new CellDomino();
+    vector<CellDomino*> line(1, c);
     board.push_back(line);
     boardX = 1; boardY = 1;
 }
 
-bool BoardTrax::putTile(int x, int y, CellTrax* c, TileTrax* t){
+bool BoardDomino::putTile(int x, int y, CellDomino* c, TileDomino* t){
     //on verifie les cotes des tuiles voisines
     //retourne false si on ne peut pas mettre une tuile
-
-    if (!checkSize(x, y))
-        return false;
-
     if(!checkSides(x, y, t))
         return false;
-
+    
     t->setPosition(c->getRect()->getPosition());
     c->setTile(t);
     c->setRect(nullptr);
     
     if (x==boardX-1){
-        vector<CellTrax*> line(boardY, nullptr);
+        vector<CellDomino*> line(boardY, nullptr);
         board.push_back(line);
         boardX++;
     }
 
     if (x==0){
-        vector<CellTrax*> line(boardY, nullptr);
+        vector<CellDomino*> line(boardY, nullptr);
         board.insert(board.begin(), line);
         boardX++;
     }
@@ -52,19 +48,16 @@ bool BoardTrax::putTile(int x, int y, CellTrax* c, TileTrax* t){
     return true;
 }
 
-bool BoardTrax::checkSize(int x, int y){
-    if (x>8 || y>8 || (x==0 && boardX>9) || (y==0 && boardY>9))
-        return false;
-    else
-        return true;
-}
+bool BoardDomino::checkSides(int x, int y, Tile* t){
+    int result = 0;
 
-bool BoardTrax::checkSides(int x, int y, TileTrax* t){
     if(y>0){
         if(board[x][y-1]!=nullptr){
             if(board[x][y-1]->getTile()!=nullptr){
-                if(t->getDirections().at(0)!=board[x][y-1]->getTile()->getDirections().at(2))
+                if(t->getSides().at(0)!=board[x][y-1]->getTile()->getSides().at(2))
                     return false;
+                else
+                    result += sideScore(t->getSides().at(0));
             }
         }
     }
@@ -72,8 +65,10 @@ bool BoardTrax::checkSides(int x, int y, TileTrax* t){
     if(y<boardY-1){
         if(board[x][y+1]!=nullptr){
             if(board[x][y+1]->getTile()!=nullptr){
-                if(t->getDirections().at(2)!=board[x][y+1]->getTile()->getDirections().at(0))
+                if(t->getSides().at(2)!=board[x][y+1]->getTile()->getSides().at(0))
                     return false;
+                else
+                    result += sideScore(t->getSides().at(2));
             }
         }
     }
@@ -81,8 +76,10 @@ bool BoardTrax::checkSides(int x, int y, TileTrax* t){
     if(x>0){
         if(board[x-1][y]!=nullptr){
             if(board[x-1][y]->getTile()!=nullptr){
-                if(t->getDirections().at(3)!=board[x-1][y]->getTile()->getDirections().at(1))
+                if(t->getSides().at(3)!=board[x-1][y]->getTile()->getSides().at(1))
                     return false;
+                else
+                    result += sideScore(t->getSides().at(3));
             }
         }
     }
@@ -90,18 +87,30 @@ bool BoardTrax::checkSides(int x, int y, TileTrax* t){
     if(x<boardX-1){
         if(board[x+1][y]!=nullptr){
             if(board[x+1][y]->getTile()!=nullptr){
-                if(t->getDirections().at(1)!=board[x+1][y]->getTile()->getDirections().at(3))
+                if(t->getSides().at(1)!=board[x+1][y]->getTile()->getSides().at(3))
                     return false;
+                else
+                    result += sideScore(t->getSides().at(1));
             }
         }
     }
 
+    stepScore = result;
     return true;
 }
 
-void BoardTrax::updateBoard(){
+int BoardDomino::sideScore(vector<int> side){
+    return side.at(0) + side.at(1) + side.at(2);
+}
+
+int BoardDomino::getStepScore(){
+    return stepScore;
+}
+
+void BoardDomino::updateBoard(){
     if(board.size()==1){
         board.at(0).at(0)->newRect();
+        board.at(0).at(0)->getRect()->setPosition(boardw/2-recth/2, boardh/2-recth/2);
     }
     else{
         for(int i=0; i<boardX; i++){
@@ -120,45 +129,25 @@ void BoardTrax::updateBoard(){
     }
 }
 
-vector<vector<CellTrax*>> BoardTrax::getTiles(){
+vector<vector<CellDomino*>> BoardDomino::getTiles(){
     return board;
 }
 
-int BoardTrax::getTileSize(){
+int BoardDomino::getTileSize(){
     return recth;
 }
 
-void BoardTrax::setRectAtPositions(int i, int j, int x, int y){
+void BoardDomino::setRectAtPositions(int i, int j, int x, int y){
     if(board.at(i).at(j)==nullptr)
-        board.at(i).at(j) = new CellTrax();
+        board.at(i).at(j) = new CellDomino();
     if(board.at(i).at(j)->getTile()==nullptr){
         board.at(i).at(j)->newRect();
         board.at(i).at(j)->getRect()->setPosition(sf::Vector2f(x, y));
-        board.at(i).at(j)->getRect()->setOrigin(sf::Vector2f(board.at(i).at(j)->getRect()->getLocalBounds().width, board.at(i).at(j)->getRect()->getLocalBounds().height)/2.f);
         board.at(i).at(j)->getRect()->setSize(sf::Vector2f(recth, recth));
     }
 }
 
-bool BoardTrax::checkPaths(int x, int y, CellTrax* c){
-    cout << x << " " << y << endl;
-    /*if (boardX>9){
-        //board.at(x+1).at(y)==nullptr
-        checkLeftBoardPath(x, y);
-    }
-    if (boardY>9)
-        cout << "boardY" << endl;*/
-    return true;
-}
-
-bool BoardTrax::checkLeftBoardPath(int x, int y){
-    if(board.at(x+1).at(y)!=nullptr){
-        if (board.at(x+1).at(y)->getTile()!=nullptr)
-            return true;
-    }
-    return false;
-}
-
-void BoardTrax::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void BoardDomino::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for(auto& row:board){
         for(auto& col:row){
             if(col != nullptr){

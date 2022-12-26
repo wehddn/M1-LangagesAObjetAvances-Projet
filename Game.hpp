@@ -3,7 +3,6 @@
 
 #include "Tile.hpp"
 #include "Board.hpp"
-#include "BoardTrax.hpp"
 #include "Bar.hpp"
 #include "Player.hpp"
 
@@ -15,7 +14,6 @@ class Game{
     public:
         Game();
         Game(int settings[2]);
-        virtual Board* getBoard();
         virtual Tile* getTile();
         virtual void setDeck();
         virtual int getDeckSize();
@@ -24,9 +22,8 @@ class Game{
         virtual void gameLoop();
         virtual int getPlayersNumber();
         vector<Tile*> deck;
-        Board* board;
         int boardX; int boardY;
-        int deck_size = 20;
+        int deck_size = 64;
         int playersNumber = 2;
         int current_player_number = 0;
         vector<Player*> players;
@@ -38,7 +35,7 @@ class GameDomino : public Game {
     public :
         GameDomino();
         GameDomino(int settings[2]);
-        Board* getBoard();
+        BoardDomino* getBoard();
         TileDomino* getTile();
         int getDeckSize();
         void setPlayers();
@@ -48,6 +45,9 @@ class GameDomino : public Game {
         void gameLoop();
     private :
         vector<TileDomino*> deck;
+        BoardDomino* board;
+        vector<PlayerDomino*> players;
+        PlayerDomino *current_player;
 };
 
 class GameTrax : public Game{
@@ -64,6 +64,8 @@ public :
     private :
         vector<TileTrax*> deck;
         BoardTrax* boardTrax;
+        PlayerTrax *current_player;
+        vector<PlayerTrax*> players;
 };
 
 #endif

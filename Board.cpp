@@ -2,54 +2,10 @@
 
 #include <iostream>
 
-Board::Board(){
-    Cell* c = new Cell();
-    vector<Cell*> line(1, c);
-    board.push_back(line);
-    boardX = 1; boardY = 1;
-}
-
-bool Board::putTile(int x, int y, Cell* c, Tile* t){
-    //on verifie les cotes des tuiles voisines
-    //retourne false si on ne peut pas mettre une tuile
-    if(!checkSides(x, y, t))
-        return false;
-    
-    t->setPosition(c->getRect()->getPosition());
-    c->setTile(t);
-    c->setRect(nullptr);
-    
-    if (x==boardX-1){
-        vector<Cell*> line(boardY, nullptr);
-        board.push_back(line);
-        boardX++;
-    }
-
-    if (x==0){
-        vector<Cell*> line(boardY, nullptr);
-        board.insert(board.begin(), line);
-        boardX++;
-    }
-
-    if (y==boardY-1){
-        for(auto& row:board){
-            row.push_back(nullptr);
-        }
-        boardY++;
-    }
-
-    if (y==0){
-        for(auto& row:board){
-            row.insert(row.begin(), nullptr);
-        }
-        boardY++;
-    }
-
-    return true;
-}
+Board::Board(){}
 
 bool Board::checkSides(int x, int y, Tile* t){
-    int result = 0;
+    /*int result = 0;
 
     if(y>0){
         if(board[x][y-1]!=nullptr){
@@ -95,7 +51,7 @@ bool Board::checkSides(int x, int y, Tile* t){
         }
     }
 
-    stepScore = result;
+    stepScore = result;*/
     return true;
 }
 
@@ -108,7 +64,7 @@ int Board::getStepScore(){
 }
 
 void Board::updateBoard(){
-    if(board.size()==1){
+    /*if(board.size()==1){
         board.at(0).at(0)->newRect();
         board.at(0).at(0)->getRect()->setPosition(boardw/2-recth/2, boardh/2-recth/2);
     }
@@ -126,7 +82,7 @@ void Board::updateBoard(){
                 }
             }
         }
-    }
+    }*/
 }
 
 vector<vector<Cell*>> Board::getTiles(){
@@ -138,13 +94,13 @@ int Board::getTileSize(){
 }
 
 void Board::setRectAtPositions(int i, int j, int x, int y){
-    if(board.at(i).at(j)==nullptr)
+    /*if(board.at(i).at(j)==nullptr)
         board.at(i).at(j) = new Cell();
     if(board.at(i).at(j)->getTile()==nullptr){
         board.at(i).at(j)->newRect();
         board.at(i).at(j)->getRect()->setPosition(sf::Vector2f(x, y));
         board.at(i).at(j)->getRect()->setSize(sf::Vector2f(recth, recth));
-    }
+    }*/
 }
 
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const {

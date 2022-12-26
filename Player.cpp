@@ -1,16 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(){
-    currentTile = nullptr;
-}
-
-void Player::addScore(int s){
-    score += s;
-}
-
-int Player::getScore(){
-    return score;
-}
+Player::Player(){}
 
 void Player::setTile(Tile* t){
     currentTile = t;

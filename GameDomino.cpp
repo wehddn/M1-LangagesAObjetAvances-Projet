@@ -36,11 +36,11 @@ GameDomino::GameDomino(int settings[2])
     deck_size = settings[1];
     tileValue = settings[2];
 
-    board = new Board();
+    board = new BoardDomino();
     setDeck();
     setPlayers();
 
-    Cell* c = getBoard()->getTiles().at(0).at(0);
+    CellDomino* c = getBoard()->getTiles().at(0).at(0);
     TileDomino* current_tile = getTile();
     board->updateBoard();
     board->putTile(0, 0, c, current_tile);
@@ -49,7 +49,7 @@ GameDomino::GameDomino(int settings[2])
 
 void GameDomino::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
-        Player* p = new Player();
+        PlayerDomino* p = new PlayerDomino();
         string name = "Player " + to_string(i+1);
         p->setName(name);
         players.push_back(p);
@@ -76,7 +76,7 @@ TileDomino *GameDomino::getTile()
     return r;
 }
 
-Board *GameDomino::getBoard()
+BoardDomino *GameDomino::getBoard()
 {
     return board;
 }
@@ -108,14 +108,14 @@ void GameDomino::gameLoop()
 
     sf::RectangleShape *redRect = nullptr;
 
-    Board *board = getBoard();
+    BoardDomino *board = getBoard();
 
     int windowh = 600;
     int windoww = 800;
 
     sf::RenderWindow window(sf::VideoMode(windoww, windowh), "DOMINO");
 
-    Bar bar(windowh, players);
+    BarDomino bar(windowh, players);
     bar.displayNextPlayer(0);
 
     Camera cam;

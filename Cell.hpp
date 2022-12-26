@@ -15,12 +15,31 @@ class Cell : public sf::Drawable {
         Cell();
         void newRect();
         void setRect(sf::RectangleShape* rect); //TODO merge new and set in set with default value
-        void setTile(Tile* t);
         sf::RectangleShape* getRect();
-        Tile* getTile();
+    protected:
+        sf::RectangleShape* rect;
     private:
         Tile* t = nullptr;;
-        sf::RectangleShape* rect;
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;      
+};
+
+class CellDomino : public Cell {
+    public:
+        CellDomino();
+        void setTile(TileDomino* t);
+        TileDomino* getTile();
+    private:
+        TileDomino* t = nullptr;;
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;      
+};
+
+class CellTrax : public Cell {
+    public:
+        CellTrax();
+        void setTile(TileTrax* t);
+        TileTrax* getTile();
+    private:
+        TileTrax* t = nullptr;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         
 };
