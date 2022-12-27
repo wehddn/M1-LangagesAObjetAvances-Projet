@@ -144,10 +144,19 @@ bool BoardTrax::checkPaths(int x, int y, CellTrax* c){
     if(x==0) x++;
     if(y==0) y++;
     visitedTiles.clear();
-    if(cycle(x, y, x, y, 0)) return true;
-    if(cycle(x, y, x, y, 1)) return true;
-    if(cycle(x, y, x, y, 2)) return true;
-    if(cycle(x, y, x, y, 3)) return true;
+    if(checkNextTile(x+1, y)){
+        if(cycle(x, y, x, y, 3)) return true;
+    }
+    if(checkNextTile(x-1, y)){
+        if(cycle(x, y, x, y, 1)) return true;
+    }
+    if(checkNextTile(x, y+1)){
+        if(cycle(x, y, x, y, 0)) return true;
+    }
+    if(checkNextTile(x, y-1)){
+        if(cycle(x, y, x, y, 2)) return true;
+    }
+
     return false;
 }
 
@@ -162,26 +171,22 @@ bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
             break;
         }
     }
-    //cout << "directions : " << firstDir << " " << newDir << endl;
+
     int nextX, nextY;
-    string test;
+    
     switch (newDir)
     {
     case 1:
         nextX=x+1; nextY=y;
-        test="x+1 ";
         break;
     case 3:
         nextX=x-1; nextY=y;
-        test="x-1 ";
         break;
     case 2:
         nextX=x; nextY=y+1;
-        test="y+1 ";
         break;
     case 0:
         nextX=x; nextY=y-1;
-        test="y-1 ";
         break;
     
     default:
@@ -190,7 +195,6 @@ bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
 
     if(checkNextTile(nextX, nextY)){
         if(!visitedTilesContains(nextX, nextY)){
-            //cout << test << nextX << " " << nextY << endl;
             pair<int, int> pair = make_pair(nextX, nextY);
             visitedTiles.push_back(pair);
             if(baseX==nextX && baseY==nextY)
