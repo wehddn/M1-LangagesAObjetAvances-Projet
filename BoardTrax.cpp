@@ -147,22 +147,26 @@ void BoardTrax::setRectAtPositions(int i, int j, int x, int y){
 }
 
 bool BoardTrax::checkPaths(int x, int y){
+    //Vérification des conditions de fin de partie
+
+    //Pour chaque tuile posée, on vérifie récursivement les 4 tuiles adjacentes jusqu'à ce qu'une boucle soit détectée
     if(x==0) x++;
     if(y==0) y++;
     visitedTiles.clear();
-    if(checkNextTile(x+1, y)){
+    if(nextTileExists(x+1, y)){
         if(cycle(x, y, x, y, 3)) return true;
     }
-    if(checkNextTile(x-1, y)){
+    if(nextTileExists(x-1, y)){
         if(cycle(x, y, x, y, 1)) return true;
     }
-    if(checkNextTile(x, y+1)){
+    if(nextTileExists(x, y+1)){
         if(cycle(x, y, x, y, 0)) return true;
     }
-    if(checkNextTile(x, y-1)){
+    if(nextTileExists(x, y-1)){
         if(cycle(x, y, x, y, 2)) return true;
     }
 
+    //Pour chaque tuile posée, on vérifie récursivement des paires de tuiles adjacentes de même couleur
     vector<bool> directions = board.at(x).at(y)->getTile()->getDirections();
     vector<int> firstDir;
     vector<int> secondDir;
@@ -184,14 +188,16 @@ bool BoardTrax::checkPaths(int x, int y){
 }
 
 bool BoardTrax::boardsPath(int x, int y, int dir){
-
+    //Pour une direction donné, on trouve la nouvelle direction de la couleur correspondante
     int newDir = nextDirection(x, y, dir);
 
+    //On calcule les coordonnées de la tuile suivante
     pair<int, int> nextXY = nextCoords(x, y, newDir);
     int nextX = nextXY.first, nextY = nextXY.second;
     
-
-    if(checkNextTile(nextX, nextY)){
+    //Si la tuile suivante existe on la vérifie récursivement
+    //Si non, on vérifie si la tuile actuelle se trouve sur le bord
+    if(nextTileExists(nextX, nextY)){
         if(boardsPath(nextX, nextY, newDir)){
             return true;
         }
@@ -204,13 +210,16 @@ bool BoardTrax::boardsPath(int x, int y, int dir){
 }
 
 bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
-
+    //Pour une direction donné, on trouve la nouvelle direction de la couleur correspondante
     int newDir = nextDirection(x, y, dir);
 
+    //On calcule les coordonnées de la tuile suivante
     pair<int, int> nextXY = nextCoords(x, y, newDir);
     int nextX = nextXY.first, nextY = nextXY.second;
 
-    if(checkNextTile(nextX, nextY)){
+    //Si la tuile suivante existe et n'a pas été visitée, on vérifie si elle est le début de la boucle
+    //Si oui, la boucle est détectée, sinon, on vérifie récursivement la tuile suivante
+    if(nextTileExists(nextX, nextY)){
         if(!visitedTilesContains(nextX, nextY)){
             pair<int, int> pair = make_pair(nextX, nextY);
             visitedTiles.push_back(pair);
@@ -260,7 +269,7 @@ pair<int, int> BoardTrax::nextCoords(int x, int y, int newDir){
     return make_pair(nextX, nextY);
 }
 
-bool BoardTrax::checkNextTile(int x, int y){
+bool BoardTrax::nextTileExists(int x, int y){
     if(board.at(x).at(y)!=nullptr){
         if (board.at(x).at(y)->getTile()!=nullptr)
             return true;
@@ -277,6 +286,9 @@ bool BoardTrax::visitedTilesContains(int x, int y){
 }
 
 bool BoardTrax::checkForced(int x, int y){
+    //Après chaque tuile posée on vérifie 4 tuiles à côte
+    //S'il n'y a pas de tuile dans Cell, on vérifie 4 tuiles et compte les couleurs (checkForcedTile)
+
     if(x==0) x++;
     if(y==0) y++;
 
@@ -314,22 +326,22 @@ bool BoardTrax::checkForced(int x, int y){
 bool BoardTrax::checkForcedTile(int newX, int newY){
     int forceCountBlack = 0;
     int forceCountWhite = 0;
-    if(checkNextTile(newX+1, newY)){
+    if(nextTileExists(newX+1, newY)){
         if(board.at(newX+1).at(newY)->getTile()->getDirections().at(3))
             forceCountBlack++;
         else forceCountWhite++;
     }
-    if(checkNextTile(newX-1, newY)){
+    if(nextTileExists(newX-1, newY)){
         if(board.at(newX-1).at(newY)->getTile()->getDirections().at(1))
             forceCountBlack++;
         else forceCountWhite++;
     }
-    if(checkNextTile(newX, newY+1)){
+    if(nextTileExists(newX, newY+1)){
         if(board.at(newX).at(newY+1)->getTile()->getDirections().at(0))
             forceCountBlack++;
         else forceCountWhite++;
     }
-    if(checkNextTile(newX, newY-1)){
+    if(nextTileExists(newX, newY-1)){
         if(board.at(newX).at(newY-1)->getTile()->getDirections().at(2))
             forceCountBlack++;
         else forceCountWhite++;
