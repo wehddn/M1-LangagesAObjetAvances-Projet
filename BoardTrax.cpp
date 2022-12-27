@@ -140,7 +140,6 @@ void BoardTrax::setRectAtPositions(int i, int j, int x, int y){
 }
 
 bool BoardTrax::checkPaths(int x, int y, CellTrax* c){
-    cout << x << " " << y << endl;
     if(x==0) x++;
     if(y==0) y++;
     visitedTiles.clear();
@@ -157,6 +156,67 @@ bool BoardTrax::checkPaths(int x, int y, CellTrax* c){
         if(cycle(x, y, x, y, 2)) return true;
     }
 
+    vector<bool> directions = board.at(x).at(y)->getTile()->getDirections();
+    vector<int> firstDir;
+    vector<int> secondDir;
+    for(int i=0; i<4; i++){
+        if(directions.at(i))
+            firstDir.push_back(i);
+        else
+            secondDir.push_back(i);
+    }
+
+    if(boardX>9 || boardY>9){
+        if(boardsPath(x, y, firstDir.at(0)) && boardsPath(x, y, firstDir.at(1)))
+            return true;
+        if(boardsPath(x, y, secondDir.at(0)) && boardsPath(x, y, secondDir.at(1)))
+            return true;
+    }
+
+    return false;
+}
+
+bool BoardTrax::boardsPath(int x, int y, int dir){
+
+    int firstDir = (dir+2) % 4;
+    int newDir;
+    vector<bool> directions = board.at(x).at(y)->getTile()->getDirections();
+    for(int i=0; i<4; i++){
+        if(directions.at(i)==directions.at(firstDir) && i!=firstDir){
+            newDir=i;
+            break;
+        }
+    }
+
+    int nextX, nextY;
+
+    switch (newDir)
+    {
+    case 1:
+        nextX=x+1; nextY=y;
+        break;
+    case 3:
+        nextX=x-1; nextY=y;
+        break;
+    case 2:
+        nextX=x; nextY=y+1;
+        break;
+    case 0:
+        nextX=x; nextY=y-1;
+        break;
+    default:
+        break;
+    }
+
+    if(checkNextTile(nextX, nextY)){
+        if(boardsPath(nextX, nextY, newDir)){
+            return true;
+        }
+    }
+    else {
+        if(nextX==9 || nextX==0 || nextY == 9 || nextY==0)
+            return true;
+    }
     return false;
 }
 
@@ -173,7 +233,7 @@ bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
     }
 
     int nextX, nextY;
-    
+
     switch (newDir)
     {
     case 1:
@@ -188,7 +248,6 @@ bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
     case 0:
         nextX=x; nextY=y-1;
         break;
-    
     default:
         break;
     }

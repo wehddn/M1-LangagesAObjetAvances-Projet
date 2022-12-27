@@ -72,6 +72,7 @@ class BoardTrax : public Board {
         bool checkSize(int x, int y);
         bool checkNextTile(int x, int y);
         bool cycle(int baseX, int baseY, int x, int y, int dir);
+        bool boardsPath(int x, int y, int dir);
         vector<pair<int, int>> visitedTiles;
         bool visitedTilesContains(int x, int y);
 };
