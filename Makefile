@@ -2,7 +2,7 @@ CC= g++ -Wall -std=c++11 # compilateur + options
 CCO= $(CC) -c $<
 OBJECTS= Tile.o TileDomino.o TileTrax.o Cell.o CellTrax.o CellDomino.o Board.o BoardDomino.o BoardTrax.o Menu.o Bar.o BarTrax.o BarDomino.o Player.o PlayerTrax.o PlayerDomino.o Game.o GameDomino.o GameTrax.o Main.o # liste des objets intermédiaires
 all : $(OBJECTS)
-	$(CC) -o go $(OBJECTS)
+	$(CC) $(OBJECTS) -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
 Tile.o : Tile.cpp Tile.hpp
 	$(CCO)
 TileDomino.o : TileDomino.cpp Tile.hpp
