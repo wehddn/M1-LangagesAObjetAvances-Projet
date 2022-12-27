@@ -70,7 +70,10 @@ class BoardTrax : public Board {
         int recth = 120;
         bool checkSides(int x, int y, TileTrax* t);
         bool checkSize(int x, int y);
-        bool checkLeftBoardPath(int x, int y);
+        bool checkNextTile(int x, int y);
+        bool cycle(int baseX, int baseY, int x, int y, int dir);
+        vector<pair<int, int>> visitedTiles;
+        bool visitedTilesContains(int x, int y);
 };
 
 #endif

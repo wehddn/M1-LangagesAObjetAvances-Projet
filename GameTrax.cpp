@@ -193,8 +193,7 @@ void GameTrax::gameLoop()
                             {
                                 if (boardTrax->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
-                                    boardTrax->checkPaths(rawCounter, colCounter, col);
-                                    end = (getDeckSize()<=0);
+                                    end = (boardTrax->checkPaths(rawCounter, colCounter, col) || getDeckSize()<=0);
                                     if(!end){
                                         current_player->setTile(nullptr);
                                         falsePlace = false;

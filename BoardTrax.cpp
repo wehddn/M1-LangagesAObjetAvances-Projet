@@ -141,18 +141,79 @@ void BoardTrax::setRectAtPositions(int i, int j, int x, int y){
 
 bool BoardTrax::checkPaths(int x, int y, CellTrax* c){
     cout << x << " " << y << endl;
-    /*if (boardX>9){
-        //board.at(x+1).at(y)==nullptr
-        checkLeftBoardPath(x, y);
-    }
-    if (boardY>9)
-        cout << "boardY" << endl;*/
-    return true;
+    if(x==0) x++;
+    if(y==0) y++;
+    visitedTiles.clear();
+    if(cycle(x, y, x, y, 0)) return true;
+    if(cycle(x, y, x, y, 1)) return true;
+    if(cycle(x, y, x, y, 2)) return true;
+    if(cycle(x, y, x, y, 3)) return true;
+    return false;
 }
 
-bool BoardTrax::checkLeftBoardPath(int x, int y){
-    if(board.at(x+1).at(y)!=nullptr){
-        if (board.at(x+1).at(y)->getTile()!=nullptr)
+bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
+
+    int firstDir = (dir+2) % 4;
+    int newDir;
+    vector<bool> directions = board.at(x).at(y)->getTile()->getDirections();
+    for(int i=0; i<4; i++){
+        if(directions.at(i)==directions.at(firstDir) && i!=firstDir){
+            newDir=i;
+            break;
+        }
+    }
+    //cout << "directions : " << firstDir << " " << newDir << endl;
+    int nextX, nextY;
+    string test;
+    switch (newDir)
+    {
+    case 1:
+        nextX=x+1; nextY=y;
+        test="x+1 ";
+        break;
+    case 3:
+        nextX=x-1; nextY=y;
+        test="x-1 ";
+        break;
+    case 2:
+        nextX=x; nextY=y+1;
+        test="y+1 ";
+        break;
+    case 0:
+        nextX=x; nextY=y-1;
+        test="y-1 ";
+        break;
+    
+    default:
+        break;
+    }
+
+    if(checkNextTile(nextX, nextY)){
+        if(!visitedTilesContains(nextX, nextY)){
+            //cout << test << nextX << " " << nextY << endl;
+            pair<int, int> pair = make_pair(nextX, nextY);
+            visitedTiles.push_back(pair);
+            if(baseX==nextX && baseY==nextY)
+                return true;
+            if(cycle(baseX, baseY, nextX, nextY, newDir)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool BoardTrax::checkNextTile(int x, int y){
+    if(board.at(x).at(y)!=nullptr){
+        if (board.at(x).at(y)->getTile()!=nullptr)
+            return true;
+    }
+    return false;
+}
+
+bool BoardTrax::visitedTilesContains(int x, int y){
+    for(auto& pair:visitedTiles){
+        if(x==pair.first && y==pair.second)
             return true;
     }
     return false;
