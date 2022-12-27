@@ -193,11 +193,12 @@ void GameTrax::gameLoop()
                             {
                                 if (boardTrax->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
-                                    end = (boardTrax->checkPaths(rawCounter, colCounter, col) || getDeckSize()<=0);
+                                    end = (boardTrax->checkPaths(rawCounter, colCounter) || getDeckSize()<=0);
                                     if(!end){
                                         current_player->setTile(nullptr);
                                         falsePlace = false;
-                                        nextPlayer();
+                                        if(!boardTrax->checkForced(rawCounter, colCounter))
+                                            nextPlayer();
                                         bar.displayNextPlayer(current_player_number);
                                     }
                                     else

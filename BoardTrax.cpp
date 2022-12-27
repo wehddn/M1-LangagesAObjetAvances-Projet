@@ -19,6 +19,13 @@ bool BoardTrax::putTile(int x, int y, CellTrax* c, TileTrax* t){
     if(!checkSides(x, y, t))
         return false;
 
+    if(forcedLock!=nullptr){
+        if(x!=forcedLock->first || y!=forcedLock->second)
+            return false;
+        else
+            forcedLock=nullptr;
+    }
+
     t->setPosition(c->getRect()->getPosition());
     c->setTile(t);
     c->setRect(nullptr);
@@ -139,7 +146,7 @@ void BoardTrax::setRectAtPositions(int i, int j, int x, int y){
     }
 }
 
-bool BoardTrax::checkPaths(int x, int y, CellTrax* c){
+bool BoardTrax::checkPaths(int x, int y){
     if(x==0) x++;
     if(y==0) y++;
     visitedTiles.clear();
@@ -266,6 +273,69 @@ bool BoardTrax::visitedTilesContains(int x, int y){
         if(x==pair.first && y==pair.second)
             return true;
     }
+    return false;
+}
+
+bool BoardTrax::checkForced(int x, int y){
+    if(x==0) x++;
+    if(y==0) y++;
+
+    if(board.at(x+1).at(y)!=nullptr){
+        if(board.at(x+1).at(y)->getTile()==nullptr && checkForcedTile(x+1, y)){
+            forcedLock = new pair<int, int>(x+1, y);
+            return true;
+        }
+    }
+
+    if(board.at(x-1).at(y)!=nullptr){
+        if(board.at(x-1).at(y)->getTile()==nullptr && checkForcedTile(x-1, y)){
+            forcedLock = new pair<int, int>(x-1, y);
+            return true;
+        }
+    }
+
+    if(board.at(x).at(y+1)!=nullptr){
+        if(board.at(x).at(y+1)->getTile()==nullptr && checkForcedTile(x, y+1)){
+            forcedLock = new pair<int, int>(x, y+1);
+            return true;
+        }
+    }
+
+    if(board.at(x).at(y-1)!=nullptr){
+        if(board.at(x).at(y-1)->getTile()==nullptr && checkForcedTile(x, y-1)){
+            forcedLock = new pair<int, int>(x, y-1);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool BoardTrax::checkForcedTile(int newX, int newY){
+    int forceCountBlack = 0;
+    int forceCountWhite = 0;
+    if(checkNextTile(newX+1, newY)){
+        if(board.at(newX+1).at(newY)->getTile()->getDirections().at(3))
+            forceCountBlack++;
+        else forceCountWhite++;
+    }
+    if(checkNextTile(newX-1, newY)){
+        if(board.at(newX-1).at(newY)->getTile()->getDirections().at(1))
+            forceCountBlack++;
+        else forceCountWhite++;
+    }
+    if(checkNextTile(newX, newY+1)){
+        if(board.at(newX).at(newY+1)->getTile()->getDirections().at(0))
+            forceCountBlack++;
+        else forceCountWhite++;
+    }
+    if(checkNextTile(newX, newY-1)){
+        if(board.at(newX).at(newY-1)->getTile()->getDirections().at(2))
+            forceCountBlack++;
+        else forceCountWhite++;
+    }
+    if (forceCountBlack > 1 || forceCountWhite > 1)
+        return true;
     return false;
 }
 

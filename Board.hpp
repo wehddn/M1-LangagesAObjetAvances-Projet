@@ -59,7 +59,8 @@ class BoardTrax : public Board {
         vector<vector<CellTrax*>> getTiles();
         int getTileSize();
         int getStepScore();
-        bool checkPaths(int x, int y, CellTrax* c);
+        bool checkPaths(int x, int y);
+        bool checkForced(int x, int y);
     private:
         vector<vector<CellTrax*>> board;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -77,6 +78,8 @@ class BoardTrax : public Board {
         bool visitedTilesContains(int x, int y);
         int nextDirection(int x, int y, int dir);
         pair<int, int> nextCoords(int x, int y, int newDir);
+        bool checkForcedTile(int newX, int newY);
+        pair<int, int>* forcedLock = nullptr;
 };
 
 #endif
