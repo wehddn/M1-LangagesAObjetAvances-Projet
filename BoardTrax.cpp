@@ -178,35 +178,11 @@ bool BoardTrax::checkPaths(int x, int y, CellTrax* c){
 
 bool BoardTrax::boardsPath(int x, int y, int dir){
 
-    int firstDir = (dir+2) % 4;
-    int newDir;
-    vector<bool> directions = board.at(x).at(y)->getTile()->getDirections();
-    for(int i=0; i<4; i++){
-        if(directions.at(i)==directions.at(firstDir) && i!=firstDir){
-            newDir=i;
-            break;
-        }
-    }
+    int newDir = nextDirection(x, y, dir);
 
-    int nextX, nextY;
-
-    switch (newDir)
-    {
-    case 1:
-        nextX=x+1; nextY=y;
-        break;
-    case 3:
-        nextX=x-1; nextY=y;
-        break;
-    case 2:
-        nextX=x; nextY=y+1;
-        break;
-    case 0:
-        nextX=x; nextY=y-1;
-        break;
-    default:
-        break;
-    }
+    pair<int, int> nextXY = nextCoords(x, y, newDir);
+    int nextX = nextXY.first, nextY = nextXY.second;
+    
 
     if(checkNextTile(nextX, nextY)){
         if(boardsPath(nextX, nextY, newDir)){
@@ -222,8 +198,28 @@ bool BoardTrax::boardsPath(int x, int y, int dir){
 
 bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
 
-    int firstDir = (dir+2) % 4;
+    int newDir = nextDirection(x, y, dir);
+
+    pair<int, int> nextXY = nextCoords(x, y, newDir);
+    int nextX = nextXY.first, nextY = nextXY.second;
+
+    if(checkNextTile(nextX, nextY)){
+        if(!visitedTilesContains(nextX, nextY)){
+            pair<int, int> pair = make_pair(nextX, nextY);
+            visitedTiles.push_back(pair);
+            if(baseX==nextX && baseY==nextY)
+                return true;
+            if(cycle(baseX, baseY, nextX, nextY, newDir)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int BoardTrax::nextDirection(int x, int y, int dir){
     int newDir;
+    int firstDir = (dir+2) % 4;
     vector<bool> directions = board.at(x).at(y)->getTile()->getDirections();
     for(int i=0; i<4; i++){
         if(directions.at(i)==directions.at(firstDir) && i!=firstDir){
@@ -231,7 +227,10 @@ bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
             break;
         }
     }
+    return newDir;
+}
 
+pair<int, int> BoardTrax::nextCoords(int x, int y, int newDir){
     int nextX, nextY;
 
     switch (newDir)
@@ -251,19 +250,7 @@ bool BoardTrax::cycle(int baseX, int baseY, int x, int y, int dir){
     default:
         break;
     }
-
-    if(checkNextTile(nextX, nextY)){
-        if(!visitedTilesContains(nextX, nextY)){
-            pair<int, int> pair = make_pair(nextX, nextY);
-            visitedTiles.push_back(pair);
-            if(baseX==nextX && baseY==nextY)
-                return true;
-            if(cycle(baseX, baseY, nextX, nextY, newDir)){
-                return true;
-            }
-        }
-    }
-    return false;
+    return make_pair(nextX, nextY);
 }
 
 bool BoardTrax::checkNextTile(int x, int y){

@@ -75,6 +75,8 @@ class BoardTrax : public Board {
         bool boardsPath(int x, int y, int dir);
         vector<pair<int, int>> visitedTiles;
         bool visitedTilesContains(int x, int y);
+        int nextDirection(int x, int y, int dir);
+        pair<int, int> nextCoords(int x, int y, int newDir);
 };
 
 #endif
