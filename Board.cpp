@@ -63,28 +63,6 @@ int Board::getStepScore(){
     return stepScore;
 }
 
-void Board::updateBoard(){
-    /*if(board.size()==1){
-        board.at(0).at(0)->newRect();
-        board.at(0).at(0)->getRect()->setPosition(boardw/2-recth/2, boardh/2-recth/2);
-    }
-    else{
-        for(int i=0; i<boardX; i++){
-            for(int j=0; j<boardY; j++){
-                if(board.at(i).at(j)!=nullptr){
-                    if(board.at(i).at(j)->getTile()!=nullptr){
-                        sf::Vector2f position = board.at(i).at(j)->getTile()->getRect()->getPosition();
-                        setRectAtPositions(i-1, j, position.x-recth, position.y);
-                        setRectAtPositions(i, j-1, position.x, position.y-recth);
-                        setRectAtPositions(i, j+1, position.x, position.y+recth);
-                        setRectAtPositions(i+1, j, position.x+recth, position.y);
-                    }
-                }
-            }
-        }
-    }*/
-}
-
 vector<vector<Cell*>> Board::getTiles(){
     return board;
 }

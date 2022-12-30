@@ -2,32 +2,6 @@
 
 #include <iostream>
 
-struct Camera
-{
-    sf::View view;
-    sf::Vector2f pos;
-    bool locked = false;
-
-    void lock(float x, float y)
-    {
-        pos.x = x;
-        pos.y = y;
-        locked = true;
-    }
-
-    void unlock() { locked = false; }
-
-    void move(float x, float y)
-    {
-        if (locked)
-        {
-            view.move(pos.x - x, pos.y - y);
-            pos.x = x;
-            pos.y = y;
-        }
-    }
-};
-
 GameTrax::GameTrax()
 {
     boardTrax = new BoardTrax();
@@ -45,18 +19,6 @@ void GameTrax::setPlayers(){
     current_player = players[0];
 }
 
-void GameTrax::nextPlayer(){
-    if (current_player_number == int(players.size())-1)
-        current_player_number = 0;
-    else 
-        current_player_number += 1;
-    current_player = players[current_player_number];
-}
-
-int GameTrax::getPlayersNumber(){
-    return playersNumber;
-}
-
 TileTrax *GameTrax::getTile()
 {
     TileTrax *r = deck.back();
@@ -67,6 +29,10 @@ TileTrax *GameTrax::getTile()
 BoardTrax *GameTrax::getBoardTrax()
 {
     return boardTrax;
+}
+
+void GameTrax::setCurrentPlayer(int current_player_number){
+    current_player = players[current_player_number];
 }
 
 void GameTrax::setDeck()

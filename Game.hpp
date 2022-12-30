@@ -13,14 +13,11 @@ using namespace std;
 class Game{
     public:
         Game();
-        Game(int settings[2]);
-        virtual Tile* getTile();
-        virtual void setDeck();
         virtual int getDeckSize();
-        virtual void setPlayers();
         virtual void nextPlayer();
-        virtual void gameLoop();
         virtual int getPlayersNumber();
+        virtual void gameLoop();
+        virtual void setCurrentPlayer(int current_player_number);
         vector<Tile*> deck;
         int boardX; int boardY;
         int deck_size = 64;
@@ -33,15 +30,13 @@ class Game{
 
 class GameDomino : public Game {
     public :
-        GameDomino();
         GameDomino(int settings[2]);
         BoardDomino* getBoard();
         TileDomino* getTile();
         int getDeckSize();
         void setPlayers();
-        void nextPlayer();
         void setDeck();
-        int getPlayersNumber();
+        void setCurrentPlayer(int current_player_number);
         void gameLoop();
     private :
         vector<TileDomino*> deck;
@@ -57,15 +52,40 @@ public :
         TileTrax* getTile();
         int getDeckSize();
         void setPlayers();
-        void nextPlayer();
         void setDeck();
-        int getPlayersNumber();
+        void setCurrentPlayer(int current_player_number);
         void gameLoop();
     private :
         vector<TileTrax*> deck;
         BoardTrax* boardTrax;
         PlayerTrax *current_player;
         vector<PlayerTrax*> players;
+};
+
+struct Camera
+{
+    sf::View view;
+    sf::Vector2f pos;
+    bool locked = false;
+
+    void lock(float x, float y)
+    {
+        pos.x = x;
+        pos.y = y;
+        locked = true;
+    }
+
+    void unlock() { locked = false; }
+
+    void move(float x, float y)
+    {
+        if (locked)
+        {
+            view.move(pos.x - x, pos.y - y);
+            pos.x = x;
+            pos.y = y;
+        }
+    }
 };
 
 #endif

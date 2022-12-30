@@ -2,89 +2,22 @@
 
 #include <iostream>
 
-struct Camera
-{
-    sf::View view;
-    sf::Vector2f pos;
-    bool locked = false;
-
-    void lock(float x, float y)
-    {
-        pos.x = x;
-        pos.y = y;
-        locked = true;
-    }
-
-    void unlock() { locked = false; }
-
-    void move(float x, float y)
-    {
-        if (locked)
-        {
-            view.move(pos.x - x, pos.y - y);
-            pos.x = x;
-            pos.y = y;
-        }
-    }
-};
-
 Game::Game(){};
 
-Game::Game(int settings[2])
-{
-/*    playersNumber = settings[0];
-    deck_size = settings[1];
-    tileValue = settings[2];
-
-    board = new Board();
-    setDeck();
-    setPlayers();
-
-    Cell* c = getBoard()->getTiles().at(0).at(0);
-    Tile* current_tile = getTile();
-    board->updateBoard();
-    board->putTile(0, 0, c, current_tile);
-    board->updateBoard();*/
-}
-
-void Game::setPlayers(){
-    /*for(int i=0; i<playersNumber; i++){    
-        Player* p = new Player();
-        string name = "Player " + to_string(i+1);
-        p->setName(name);
-        players.push_back(p);
-    }
-    current_player = players[0];*/
-}
-
 void Game::nextPlayer(){
-    /*if (current_player_number == int(players.size())-1)
+    if (current_player_number == playersNumber-1)
         current_player_number = 0;
     else 
         current_player_number += 1;
-    current_player = players[current_player_number];*/
+    setCurrentPlayer(current_player_number);
+}
+
+void Game::setCurrentPlayer(int current_player_number){
+    current_player = players[current_player_number];
 }
 
 int Game::getPlayersNumber(){
     return playersNumber;
-}
-
-Tile *Game::getTile()
-{
-    Tile *r = deck.back();
-    deck.pop_back();
-    return r;
-}
-
-void Game::setDeck()
-{
-    /*int size = board->getTileSize();
-    for (int i = 0; i < deck_size; i++)
-    {
-        Tile *t = new Tile(tileValue);
-        t->setPosition(sf::Vector2f(size, size));
-        deck.push_back(t);
-    }*/
 }
 
 int Game::getDeckSize(){

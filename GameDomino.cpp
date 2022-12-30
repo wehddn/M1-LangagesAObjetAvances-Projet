@@ -2,34 +2,6 @@
 
 #include <iostream>
 
-struct Camera
-{
-    sf::View view;
-    sf::Vector2f pos;
-    bool locked = false;
-
-    void lock(float x, float y)
-    {
-        pos.x = x;
-        pos.y = y;
-        locked = true;
-    }
-
-    void unlock() { locked = false; }
-
-    void move(float x, float y)
-    {
-        if (locked)
-        {
-            view.move(pos.x - x, pos.y - y);
-            pos.x = x;
-            pos.y = y;
-        }
-    }
-};
-
-GameDomino::GameDomino(){};
-
 GameDomino::GameDomino(int settings[2])
 {
     playersNumber = settings[0];
@@ -57,18 +29,6 @@ void GameDomino::setPlayers(){
     current_player = players[0];
 }
 
-void GameDomino::nextPlayer(){
-    if (current_player_number == int(players.size())-1)
-        current_player_number = 0;
-    else 
-        current_player_number += 1;
-    current_player = players[current_player_number];
-}
-
-int GameDomino::getPlayersNumber(){
-    return playersNumber;
-}
-
 TileDomino *GameDomino::getTile()
 {
     TileDomino *r = deck.back();
@@ -94,6 +54,10 @@ void GameDomino::setDeck()
 
 int GameDomino::getDeckSize(){
     return deck.size();
+}
+
+void GameDomino::setCurrentPlayer(int current_player_number){
+    current_player = players[current_player_number];
 }
 
 void GameDomino::gameLoop()

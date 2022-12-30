@@ -13,7 +13,6 @@ using namespace std;
 class Board : public sf::Drawable {
     public:
         Board();
-        void updateBoard();
         vector<vector<Cell*>> getTiles();
         int getTileSize();
         int getStepScore();
