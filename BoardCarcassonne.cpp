@@ -13,8 +13,8 @@ bool BoardCarcassonne::putTile(int x, int y, CellCarcassonne* c, TileCarcassonne
     //on verifie les cotes des tuiles voisines
     //retourne false si on ne peut pas mettre une tuile
 
-    //if(!checkSides(x, y, t))
-    //    return false;
+    if(!checkSides(x, y, t))
+        return false;
 
     t->setPosition(c->getRect()->getPosition());
     c->setTile(t);
@@ -53,7 +53,7 @@ bool BoardCarcassonne::checkSides(int x, int y, TileCarcassonne* t){
     if(y>0){
         if(board[x][y-1]!=nullptr){
             if(board[x][y-1]->getTile()!=nullptr){
-                if(t->getDirections().at(0)!=board[x][y-1]->getTile()->getDirections().at(2))
+                if(t->getSides().at(0)!=board[x][y-1]->getTile()->getSides().at(2))
                     return false;
             }
         }
@@ -62,7 +62,7 @@ bool BoardCarcassonne::checkSides(int x, int y, TileCarcassonne* t){
     if(y<boardY-1){
         if(board[x][y+1]!=nullptr){
             if(board[x][y+1]->getTile()!=nullptr){
-                if(t->getDirections().at(2)!=board[x][y+1]->getTile()->getDirections().at(0))
+                if(t->getSides().at(2)!=board[x][y+1]->getTile()->getSides().at(0))
                     return false;
             }
         }
@@ -71,7 +71,7 @@ bool BoardCarcassonne::checkSides(int x, int y, TileCarcassonne* t){
     if(x>0){
         if(board[x-1][y]!=nullptr){
             if(board[x-1][y]->getTile()!=nullptr){
-                if(t->getDirections().at(3)!=board[x-1][y]->getTile()->getDirections().at(1))
+                if(t->getSides().at(3)!=board[x-1][y]->getTile()->getSides().at(1))
                     return false;
             }
         }
@@ -80,7 +80,7 @@ bool BoardCarcassonne::checkSides(int x, int y, TileCarcassonne* t){
     if(x<boardX-1){
         if(board[x+1][y]!=nullptr){
             if(board[x+1][y]->getTile()!=nullptr){
-                if(t->getDirections().at(1)!=board[x+1][y]->getTile()->getDirections().at(3))
+                if(t->getSides().at(1)!=board[x+1][y]->getTile()->getSides().at(3))
                     return false;
             }
         }

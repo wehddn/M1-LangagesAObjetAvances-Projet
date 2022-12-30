@@ -58,19 +58,22 @@ class TileTrax : public Tile {
 
 class TileCarcassonne : public Tile {
     public:
-        TileCarcassonne(sf::Texture *texture);
+        TileCarcassonne(sf::Texture *texture, int tileType);
         void rotate(); // tourner de 90°
         sf::RectangleShape* getRect();
         vector<bool> getDirections();
+        vector<vector<int>> getSides();
         void setPosition(const sf::Vector2f &position);
     private:
+        void setSides(int x);
         sf::Texture *head;
         sf::Texture *tail;
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         void setUpRect();
+        vector<vector<int>> sides;
         vector<bool> directions; //n, b, n, b (head) ou b, n, n, b (tail)
         string state = "head";
-        vector<vector<pair<int,int>>> fields;
+        bool extraPoints = false;
 };
 
 #endif

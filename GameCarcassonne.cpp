@@ -53,7 +53,7 @@ void GameCarcassonne::setDeck()
     for (int i = 0; i < 24; i++)
     {
         for(int j = 0; j<tileNumber[i]; j++){
-            TileCarcassonne *t = new TileCarcassonne(textures->at(i));
+            TileCarcassonne *t = new TileCarcassonne(textures->at(i), i);
             t->setPosition(sf::Vector2f(size, size));
             deck.push_back(t);
         }
