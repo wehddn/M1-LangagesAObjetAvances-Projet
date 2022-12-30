@@ -81,4 +81,31 @@ class BoardTrax : public Board {
         pair<int, int>* forcedLock = nullptr;
 };
 
+class BoardCarcassonne : public Board {
+    public:
+        BoardCarcassonne();
+        bool putTile(int x, int y, CellCarcassonne* c, TileCarcassonne* t);
+        void updateBoard();
+        vector<vector<CellCarcassonne*>> getTiles();
+        int getTileSize();
+        int getStepScore();
+        bool checkPaths(int x, int y);
+    private:
+        vector<vector<CellCarcassonne*>> board;
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+        void setRectAtPositions(int i, int j, int x, int y);
+        int boardX; int boardY;
+        int boardh = 600; //TODO modifier
+        int boardw = 800;
+        int recth = 120;
+        bool checkSides(int x, int y, TileCarcassonne* t);
+        bool nextTileExists(int x, int y);
+        bool cycle(int baseX, int baseY, int x, int y, int dir);
+        bool boardsPath(int x, int y, int dir);
+        vector<pair<int, int>> visitedTiles;
+        bool visitedTilesContains(int x, int y);
+        int nextDirection(int x, int y, int dir);
+        pair<int, int> nextCoords(int x, int y, int newDir);
+};
+
 #endif

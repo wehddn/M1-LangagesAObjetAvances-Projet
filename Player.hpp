@@ -30,7 +30,16 @@ class PlayerTrax : public Player{
         void setTile(TileTrax* t);
         TileTrax* getTile();
     private:
-        TileTrax* currentTile;
+        TileTrax* currentTile = nullptr;
+};
+
+class PlayerCarcassonne : public Player{
+    public:
+        PlayerCarcassonne();
+        void setTile(TileCarcassonne* t);
+        TileCarcassonne* getTile();
+    private:
+        TileCarcassonne* currentTile;
 };
 
 #endif

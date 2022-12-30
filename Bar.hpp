@@ -50,4 +50,13 @@ class BarTrax : public Bar {
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
+class BarCarcassonne : public Bar {
+    public:
+        BarCarcassonne(float barw, vector<PlayerCarcassonne*>);
+        void displayNextPlayer(int current_player);
+        void setDisplayedTile(Tile*);
+    private:
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+};
+
 #endif

@@ -41,7 +41,16 @@ class CellTrax : public Cell {
     private:
         TileTrax* t = nullptr;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        
+};
+
+class CellCarcassonne : public Cell {
+    public:
+        CellCarcassonne();
+        void setTile(TileCarcassonne* t);
+        TileCarcassonne* getTile();
+    private:
+        TileCarcassonne* t = nullptr;
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 #endif

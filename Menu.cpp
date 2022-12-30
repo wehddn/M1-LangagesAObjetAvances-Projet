@@ -6,7 +6,7 @@ using namespace std;
 
 Menu::Menu(float width, float height)
 {
-    if(!font.loadFromFile("arial.TTF")){
+    if(!font.loadFromFile("./src/arial.TTF")){
         // handle error
     }
 
@@ -175,6 +175,13 @@ void Menu::menuLoop(){
                             windowM.close();
                             g.gameLoop();
                             std::cout << "End TRAX!\n";
+                            windowM.create(sf::VideoMode(800,800), "MENU");
+                        }
+                        else if(getPressedItem() == 2 && status=="menu"){
+                            GameCarcassonne g{};
+                            windowM.close();
+                            g.gameLoop();
+                            std::cout << "End CARCASSONNE!\n";
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         break;

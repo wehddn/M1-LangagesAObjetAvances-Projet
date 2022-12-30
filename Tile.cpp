@@ -4,41 +4,9 @@
 #include <cstdlib>
 #include <ctime>
 
-Tile::Tile(int tileValue){
-    tileValue++;
-    for(int i=0; i<4; i++)
-    {
-        sides.push_back(std::vector<int>());
-        for(int j=0; j<3; j++)
-        {    
-            sides[i].push_back((rand() % (tileValue)));
-        }
-    }
-    setUpRect();
-}
+Tile::Tile(int tileValue){}
 
 Tile::Tile(){};
-
-void Tile::setUpRect(){
-    int recth = 120;    //TODO modifier
-    getRect()->setSize(sf::Vector2f(recth, recth));
-    font.loadFromFile("./src/Gargi.ttf");
-    sf::Texture *texture = new sf::Texture;
-    texture->loadFromFile("./src/tile.png");
-    getRect()->setTexture(texture);
-        
-    for (int i=0; i<4; i++){
-        for (int j=0; j<3; j++){
-            text[i][j].setFont(font);
-            text[i][j].setCharacterSize(15);
-            text[i][j].setFillColor(sf::Color::Red);
-            text[i][j].setStyle(sf::Text::Bold | sf::Text::Underlined);
-            text[i][j].setString(to_string(sides.at(i).at(j)));
-        }
-    }
-
-    setText(0, 0);
-}
 
 void Tile::setText(float x, float y){
     float w = getRect()->getGlobalBounds().width;

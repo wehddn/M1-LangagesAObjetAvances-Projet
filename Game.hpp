@@ -48,7 +48,7 @@ class GameDomino : public Game {
 class GameTrax : public Game{
 public :
         GameTrax();
-        BoardTrax* getBoardTrax();
+        BoardTrax* getBoard();
         TileTrax* getTile();
         int getDeckSize();
         void setPlayers();
@@ -57,9 +57,26 @@ public :
         void gameLoop();
     private :
         vector<TileTrax*> deck;
-        BoardTrax* boardTrax;
+        BoardTrax* board;
         PlayerTrax *current_player;
         vector<PlayerTrax*> players;
+};
+
+class GameCarcassonne : public Game{
+public :
+        GameCarcassonne();
+        BoardCarcassonne* getBoard();
+        TileCarcassonne* getTile();
+        int getDeckSize();
+        void setPlayers();
+        void setDeck();
+        void setCurrentPlayer(int current_player_number);
+        void gameLoop();
+    private :
+        vector<TileCarcassonne*> deck;
+        BoardCarcassonne* board;
+        PlayerCarcassonne *current_player;
+        vector<PlayerCarcassonne*> players;
 };
 
 struct Camera

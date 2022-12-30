@@ -5,53 +5,6 @@
 Board::Board(){}
 
 bool Board::checkSides(int x, int y, Tile* t){
-    /*int result = 0;
-
-    if(y>0){
-        if(board[x][y-1]!=nullptr){
-            if(board[x][y-1]->getTile()!=nullptr){
-                if(t->getSides().at(0)!=board[x][y-1]->getTile()->getSides().at(2))
-                    return false;
-                else
-                    result += sideScore(t->getSides().at(0));
-            }
-        }
-    }
-
-    if(y<boardY-1){
-        if(board[x][y+1]!=nullptr){
-            if(board[x][y+1]->getTile()!=nullptr){
-                if(t->getSides().at(2)!=board[x][y+1]->getTile()->getSides().at(0))
-                    return false;
-                else
-                    result += sideScore(t->getSides().at(2));
-            }
-        }
-    }
-
-    if(x>0){
-        if(board[x-1][y]!=nullptr){
-            if(board[x-1][y]->getTile()!=nullptr){
-                if(t->getSides().at(3)!=board[x-1][y]->getTile()->getSides().at(1))
-                    return false;
-                else
-                    result += sideScore(t->getSides().at(3));
-            }
-        }
-    }
-
-    if(x<boardX-1){
-        if(board[x+1][y]!=nullptr){
-            if(board[x+1][y]->getTile()!=nullptr){
-                if(t->getSides().at(1)!=board[x+1][y]->getTile()->getSides().at(3))
-                    return false;
-                else
-                    result += sideScore(t->getSides().at(1));
-            }
-        }
-    }
-
-    stepScore = result;*/
     return true;
 }
 

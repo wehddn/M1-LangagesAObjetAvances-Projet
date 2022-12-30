@@ -2,16 +2,16 @@
 
 #include <iostream>
 
-GameTrax::GameTrax()
+GameCarcassonne::GameCarcassonne()
 {
-    board = new BoardTrax();
+    board = new BoardCarcassonne();
     setDeck();
     setPlayers();
 }
 
-void GameTrax::setPlayers(){
+void GameCarcassonne::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
-        PlayerTrax* p = new PlayerTrax();
+        PlayerCarcassonne* p = new PlayerCarcassonne();
         string name = "Player " + to_string(i+1);
         p->setName(name);
         players.push_back(p);
@@ -19,46 +19,56 @@ void GameTrax::setPlayers(){
     current_player = players[0];
 }
 
-TileTrax *GameTrax::getTile()
+TileCarcassonne *GameCarcassonne::getTile()
 {
-    TileTrax *r = deck.back();
+    TileCarcassonne *r = deck.back();
     deck.pop_back();
     return r;
 }
 
-BoardTrax *GameTrax::getBoard()
+BoardCarcassonne *GameCarcassonne::getBoard()
 {
     return board;
 }
 
-void GameTrax::setCurrentPlayer(int current_player_number){
+void GameCarcassonne::setCurrentPlayer(int current_player_number){
     current_player = players[current_player_number];
 }
 
-void GameTrax::setDeck()
+void GameCarcassonne::setDeck()
 {
     int size = board->getTileSize();
-    sf::Texture *textureH = new sf::Texture;
-    textureH->loadFromFile("./src/tileTraxH.png");
-    sf::Texture *textureT = new sf::Texture;
-    textureT->loadFromFile("./src/tileTraxT.png");
-    for (int i = 0; i < deck_size; i++)
-    {
-        TileTrax *t = new TileTrax(textureH, textureT);
-        t->setPosition(sf::Vector2f(size, size));
-        deck.push_back(t);
+    vector<sf::Texture*> *textures = new vector<sf::Texture*>;
+    for(int i=1; i<=24; i++){
+        sf::Texture *texture = new sf::Texture;
+        string link = "./src/carcassonne/Carcassonne_" + to_string(i) + ".png";
+        texture->loadFromFile(link);
+        textures->push_back(texture);
     }
+
+    int tileNumber[] = {9, 3, 2, 1, 1, 3, 3, 8, 4,
+                        5, 2, 3, 4, 2, 3, 2, 4, 3,
+                        1, 2, 1, 1, 2, 3};
+
+    for (int i = 0; i < 24; i++)
+    {
+        for(int j = 0; j<tileNumber[i]; j++){
+            TileCarcassonne *t = new TileCarcassonne(textures->at(i));
+            t->setPosition(sf::Vector2f(size, size));
+            deck.push_back(t);
+        }
+    }
+    random_shuffle(deck.begin(), deck.end());
 }
 
-int GameTrax::getDeckSize(){
+int GameCarcassonne::getDeckSize(){
     return deck.size();
 }
 
-void GameTrax::gameLoop()
+void GameCarcassonne::gameLoop()
 {
     bool lock_click;
     bool key_click_right;
-    bool key_click_up;
     bool falsePlace;
     bool zoom;
 
@@ -66,20 +76,20 @@ void GameTrax::gameLoop()
 
     sf::RectangleShape *redRect = nullptr;
 
-    BoardTrax *boardTrax = getBoard();
+    BoardCarcassonne *boardCarcassonne = getBoard();
 
     int windowh = 600;
     int windoww = 800;
 
-    sf::RenderWindow window(sf::VideoMode(windoww, windowh), "TRAX");
+    sf::RenderWindow window(sf::VideoMode(windoww, windowh), "CARCASSONNE");
 
-    BarTrax bar(windowh, players);
+    BarCarcassonne bar(windowh, players);
     bar.displayNextPlayer(0);
 
     Camera cam;
     cam.view = window.getView();
 
-    std::cout << "Start TRAX!\n";
+    std::cout << "Start Carcassonne!\n";
     
     while (window.isOpen())
     {
@@ -137,13 +147,11 @@ void GameTrax::gameLoop()
                 int rawCounter = 0;
                 int colCounter = 0;
 
-                if (boardTrax->getTiles().size()==1){
-                    //float x = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().height;
-                    //float y = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().width;
-                    boardTrax->getTiles().at(0).at(0)->getRect()->setPosition(sf::Vector2f(position.x, position.y));
+                if (boardCarcassonne->getTiles().size()==1){
+                    boardCarcassonne->getTiles().at(0).at(0)->getRect()->setPosition(sf::Vector2f(position.x, position.y));
                 }
                 
-                for (auto &row : boardTrax->getTiles())
+                for (auto &row : boardCarcassonne->getTiles())
                 {
                     for (auto &col : row)
                     {
@@ -157,14 +165,14 @@ void GameTrax::gameLoop()
                             // sinon, on mis l'emplacement sélectionné en rouge
                             if (r != nullptr && r->getGlobalBounds().contains(position.x, position.y))
                             {
-                                if (boardTrax->putTile(rawCounter, colCounter, col, current_player->getTile()))
+                                if (boardCarcassonne->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
-                                    end = (boardTrax->checkPaths(rawCounter, colCounter) || getDeckSize()<=0);
+                                    //end = (boardCarcassonne->checkPaths(rawCounter, colCounter) || getDeckSize()<=0);
+                                    end = getDeckSize()<=0;
                                     if(!end){
                                         current_player->setTile(nullptr);
                                         falsePlace = false;
-                                        if(!boardTrax->checkForced(rawCounter, colCounter))
-                                            nextPlayer();
+                                        nextPlayer();
                                         bar.displayNextPlayer(current_player_number);
                                     }
                                     else
@@ -213,18 +221,6 @@ void GameTrax::gameLoop()
                 current_player->getTile()->rotate();
                 bar.setDisplayedTile(current_player->getTile());
             }
-
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up)
-            {
-                key_click_up = false;
-            }
-            //rotate l'image
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Up && key_click_up != true)
-            {
-                key_click_up = true;
-                current_player->getTile()->turn();
-                bar.setDisplayedTile(current_player->getTile());
-            }
         }
 
         // on charge une tuile
@@ -232,7 +228,7 @@ void GameTrax::gameLoop()
         if (current_player->getTile() == nullptr)
         {
             current_player->setTile(getTile());
-            boardTrax->updateBoard();
+            boardCarcassonne->updateBoard();
             // affichage de la tuile suivante dans le coin
             //displayedTile = *current_tile;
             //displayedTile.setPosition(sf::Vector2f(0, 0));
@@ -242,7 +238,7 @@ void GameTrax::gameLoop()
         window.clear();
 
         window.setView(cam.view);
-        window.draw(*boardTrax);
+        window.draw(*boardCarcassonne);
 
         // fixer element (ne pas changer lors du zoom)
         window.setView(window.getDefaultView());
