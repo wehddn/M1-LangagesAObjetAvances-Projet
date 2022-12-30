@@ -114,8 +114,19 @@ sf::RectangleShape* TileCarcassonne::getRect(){
 
 void TileCarcassonne::rotate(){
     getRect()->rotate(90);
-    directions.insert(directions.begin(), directions[3]);
-    directions.pop_back();
+
+    int size = sides.size()-1;
+    vector<int> tmp = sides.back();
+    sides.erase(sides.begin()+size);
+    sides.insert(sides.begin(), tmp);
+    std::reverse(sides.at(2).begin(),sides.at(2).end());
+    std::reverse(sides.at(0).begin(),sides.at(0).end());
+    
+    for (int i=0; i<4; i++){
+        for (int j=0; j<3; j++){
+            text[i][j].setString(to_string(sides.at(i).at(j)));
+        }
+    }
 }
 
 vector<bool> TileCarcassonne::getDirections(){
