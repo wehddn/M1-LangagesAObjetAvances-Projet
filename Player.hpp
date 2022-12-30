@@ -6,14 +6,10 @@
 class Player{
     public:
         Player();
-        void setTile(Tile* t);
-        Tile* getTile();
         void setName(string n);
         string getName();
     protected:
         string name;
-    private:
-        Tile* currentTile;
 };
 
 class PlayerDomino : public Player{
@@ -34,7 +30,6 @@ class PlayerTrax : public Player{
         void setTile(TileTrax* t);
         TileTrax* getTile();
     private:
-        int score = 0;
         TileTrax* currentTile;
 };
 
