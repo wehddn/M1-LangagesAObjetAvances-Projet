@@ -58,10 +58,6 @@ void BarDomino::setDisplayedTile(Tile* t){
     displayedTile.getRect()->setOutlineColor(sf::Color::White);
 }
 
-void BarDomino::setEndGame(std::vector<PlayerDomino*> players){
-    endGame = true;   
-}
-
 void BarDomino::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(rectBar);
 

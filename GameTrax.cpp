@@ -168,7 +168,7 @@ void GameTrax::gameLoop()
                                         bar.displayNextPlayer(current_player_number);
                                     }
                                     else
-                                        bar.setEndGame(players);
+                                        bar.setEndGame();
                                 }
                                 else
                                 {

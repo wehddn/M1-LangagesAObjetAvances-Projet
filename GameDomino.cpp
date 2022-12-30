@@ -168,7 +168,7 @@ void GameDomino::gameLoop()
                                         bar.displayNextPlayer(current_player_number);
                                     }
                                     else
-                                        bar.setEndGame(players);
+                                        bar.setEndGame();
                                 }
                                 else
                                 {
@@ -232,7 +232,7 @@ void GameDomino::gameLoop()
                     bar.displayNextPlayer(current_player_number);
                 }
                 else
-                    bar.setEndGame(players);
+                    bar.setEndGame();
             }
         }
 

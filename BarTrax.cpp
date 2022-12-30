@@ -42,10 +42,6 @@ void BarTrax::setDisplayedTile(Tile* t){
     displayedTile.getRect()->setOutlineColor(sf::Color::White);
 }
 
-void BarTrax::setEndGame(std::vector<PlayerTrax*> players){
-    endGame = true;
-}
-
 void BarTrax::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(rectBar);
 

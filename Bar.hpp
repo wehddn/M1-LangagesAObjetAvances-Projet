@@ -12,9 +12,7 @@ class Bar : public sf::Drawable {
         Bar();
         void setBar();
         void setEndText();
-        void setScore(int player, int score);
-        void displayNextPlayer(int current_player);
-        void setEndGame(std::vector<Player*>);
+        void setEndGame();
     protected:
         sf::RectangleShape rectBar;
         sf::RectangleShape rectEmpty;
@@ -27,10 +25,9 @@ class Bar : public sf::Drawable {
         Tile displayedTile;
         int barw = 120;
         int tileh = 120;
+        bool endGame = false;
     private:
         vector<sf::Text*> playersScores;
-        bool endGame = false;
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 class BarDomino : public Bar {
@@ -39,10 +36,8 @@ class BarDomino : public Bar {
         void setScore(int player, int score);
         void displayNextPlayer(int current_player);
         void setDisplayedTile(Tile*);
-        void setEndGame(std::vector<PlayerDomino*>);
     private:
         vector<sf::Text*> playersScores;
-        bool endGame = false;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
@@ -51,9 +46,7 @@ class BarTrax : public Bar {
         BarTrax(float barw, vector<PlayerTrax*>);
         void displayNextPlayer(int current_player);
         void setDisplayedTile(Tile*);
-        void setEndGame(std::vector<PlayerTrax*>);
     private:
-        bool endGame = false;
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
