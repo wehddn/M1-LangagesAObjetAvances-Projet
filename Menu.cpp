@@ -171,6 +171,7 @@ void Menu::MoveLeft(){
 }
 
 void Menu::menuLoop(){
+    GarbageCollector gc;
     sf::RenderWindow windowM(sf::VideoMode(800,800), "MENU");
     while(windowM.isOpen()){
 
@@ -201,6 +202,7 @@ void Menu::menuLoop(){
                             g.gameLoop();
                             std::cout << "End DOMINO!\n";
                             GarbageCollector::clean();
+                            std::cout << "Clean DOMINO!\n";
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         else if(getPressedItem() == 1 && status=="menu"){
@@ -209,6 +211,7 @@ void Menu::menuLoop(){
                             g.gameLoop();
                             std::cout << "End TRAX!\n";
                             GarbageCollector::clean();
+                            std::cout << "Clean TRAX!\n";
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         else if(getPressedItem() == 2 && status=="menu"){
@@ -217,6 +220,7 @@ void Menu::menuLoop(){
                             g.gameLoop();
                             std::cout << "End CARCASSONNE!\n";
                             GarbageCollector::clean();
+                            std::cout << "Clean CARCASSONNE!\n";
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         break;

@@ -7,7 +7,6 @@
 
 int main()
 {
-    GarbageCollector gc;
     srand(time(NULL));
     Menu menu(800, 800);
     menu.menuLoop();
