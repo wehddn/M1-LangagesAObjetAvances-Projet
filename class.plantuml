@@ -1,4 +1,5 @@
 @startuml classeDiagramme
+package game{
 class Game{
     + deck : vector<Tile *>
     + boardX : int
@@ -29,9 +30,10 @@ class GameDomino{
     + setPlayers()
     + setDeck()
 }
+}
 
 Game <|-- GameDomino
-
+package board{
 class Board{
     - board : vector<vector<Cell *>>
     - boardX : int
@@ -58,8 +60,9 @@ class BoardDomino{
     + bool putTile(int, CellDomino *,Tile Domino*)
     + updateBoard()
 }
-
+}
 Board <|-- BoardDomino
+package tile{
 class Tile{
     + sides : vector<vector<int>>
     + text : sf::Text[4][3]
@@ -81,7 +84,9 @@ class TileDomino{
     + TileDomino(int)
     - setUpRect()
 }
+}
 Tile <|-- TileDomino
+package player{
 class Player{
     # name : string
 
@@ -100,8 +105,10 @@ class PlayerDomino{
     + setTile(TileDomino*)
     + TileDomino* getTile()
 }
+}
 Player <|-- PlayerDomino
 PlayerDomino "1" o-- "1" TileDomino
+package cell{
 class Cell{
     # rect : sf::RectangleShape*
     - t : Tile*
@@ -119,8 +126,9 @@ class CellDomino{
     + setTile(TileDomino*)
     + TileDomino* getTile()
 }
-
+}
 Cell <|-- CellDomino
+package bar{
 class Bar{
     # rectBar : sf::RectangleShape
     # rectEmpty : sf::RectangleShape
@@ -148,6 +156,7 @@ class BarDomino{
     + displayNextPlayer(int)
     + setDisplayedTile(Tile *)
     - draw(sf::RenderTarget&,sf::RenderStates)
+}
 }
 Bar <|-- BarDomino
 
