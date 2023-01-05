@@ -2,8 +2,10 @@
 
 #include <iostream>
 
-GameCarcassonne::GameCarcassonne()
+GameCarcassonne::GameCarcassonne(int settings[1])
 {
+    playersNumber = settings[0];
+
     board = new BoardCarcassonne();
     setDeck();
     setPlayers();

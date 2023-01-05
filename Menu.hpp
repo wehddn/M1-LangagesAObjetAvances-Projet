@@ -2,6 +2,7 @@
 
 #define MAX_NUMBER_OF_ITEMS 3
 #define DOMINO_SETTINGS_NUMBER 3
+#define CARCASSONNE_SETTINGS_NUMBER 1
 
 class Menu{
     public:
@@ -25,6 +26,8 @@ class Menu{
     sf::Font font;
     sf::Text menu[MAX_NUMBER_OF_ITEMS];
     sf::Text dominoSettingsText[DOMINO_SETTINGS_NUMBER];
+    sf::Text carcassonneSettingsText[CARCASSONNE_SETTINGS_NUMBER];
     int dominoSettingsValues[DOMINO_SETTINGS_NUMBER];
+    int carcassonneSettingsValues[CARCASSONNE_SETTINGS_NUMBER];
     sf::Text num;
 };

@@ -64,7 +64,7 @@ public :
 
 class GameCarcassonne : public Game{
 public :
-        GameCarcassonne();
+        GameCarcassonne(int settings[1]);
         BoardCarcassonne* getBoard();
         TileCarcassonne* getTile();
         int getDeckSize();
