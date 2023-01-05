@@ -24,6 +24,8 @@ class GarbageCollector{
     public:
         GarbageCollector();
         ~GarbageCollector();
+        static void clean();
+        
         static void create(sf::Text* text);
         static void create(Cell* cell);
         static void create(pair<int,int>* pairIntInt);

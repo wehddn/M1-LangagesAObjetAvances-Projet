@@ -1,5 +1,7 @@
 #include "GarbageCollector.hpp"
 
+#include <iostream>
+
 set<sf::Text*> GarbageCollector::texts;
 set<Cell*> GarbageCollector::cells;
 set<pair<int,int>*> GarbageCollector::pairsIntInt;
@@ -12,29 +14,41 @@ set<Tile*> GarbageCollector::tiles;
 GarbageCollector::GarbageCollector(){};
 
 GarbageCollector::~GarbageCollector(){
-    for(auto &o : texts ){
+    clean();
+};
+
+void GarbageCollector::clean(){
+    for(sf::Text* o : texts ){
         delete(o);
+        del(o);
     }
-    for(auto &o : cells ){
+    for(Cell* o : cells ){
         delete(o);
+        del(o);
     }
-    for(auto &o : pairsIntInt ){
+    for(pair<int,int>* o : pairsIntInt ){
         delete(o);
+        del(o);
     }
-    for(auto &o : rectangleShapes ){
+    for(sf::RectangleShape* o : rectangleShapes ){
         delete(o);
+        del(o);
     }
-    for(auto &o : boards ){
+    for(Board* o : boards ){
         delete(o);
+        del(o);
     }
-    for(auto &o : players ){
+    for(Player* o : players ){
         delete(o);
+        del(o);
     }
-    for(auto &o : textures ){
+    for(sf::Texture* o : textures ){
         delete(o);
+        del(o);
     }
-    for(auto &o : tiles ){
+    for(Tile* o : tiles ){
         delete(o);
+        del(o);
     }
 };
 

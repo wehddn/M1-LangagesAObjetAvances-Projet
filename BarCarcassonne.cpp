@@ -1,4 +1,5 @@
 #include "Bar.hpp"
+#include "GarbageCollector.hpp"
 
 #include <iostream>
 
@@ -8,12 +9,14 @@ BarCarcassonne::BarCarcassonne(float height, vector<PlayerCarcassonne*> players)
 
     for (int i=0; i<int(players.size()); i++){
         sf::Text* text1 = new sf::Text(*text);
+        GarbageCollector::create(text1);
         text1->setPosition(sf::Vector2f(4, tileh+3 + i*21));
         text1->setString(players.at(i)->getName());
         playersNames.push_back(text1);
     }
 
     sf::Text* rotate = new sf::Text(*text);
+    GarbageCollector::create(rotate);
     rotate->setPosition(sf::Vector2f(4, barh - 3*22));
     rotate->setString("Rotate : Up");
     settings.push_back(rotate);

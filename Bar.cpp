@@ -1,4 +1,5 @@
 #include "Bar.hpp"
+#include "GarbageCollector.hpp"
 
 #include <iostream>
 
@@ -20,17 +21,20 @@ void Bar::setBar(){
     playersNames = std::vector<sf::Text*>();
 
     text = new sf::Text();
+    GarbageCollector::create(text);
     text->setFont(font);
     text->setCharacterSize(17);
     text->setFillColor(sf::Color::White);
     text->setStyle(sf::Text::Underlined);
 
     sf::Text* zoom = new sf::Text(*text);
+    GarbageCollector::create(zoom);
     zoom->setPosition(sf::Vector2f(4, barh - 1*22));
     zoom->setString("Zoom : Z/X");
     settings.push_back(zoom);
 
     sf::Text* turn = new sf::Text(*text);
+    GarbageCollector::create(turn);
     turn->setPosition(sf::Vector2f(4, barh - 2*22));
     turn->setString("Turn : Right");
     settings.push_back(turn);
@@ -41,6 +45,7 @@ void Bar::setEndText(){
     float settingsTextHeight = settings.at(settings.size()-1)->getPosition().y;
     float endGameHeight = playersTextHeight + (settingsTextHeight-playersTextHeight)/2;
     endGameText = new sf::Text(*text);
+    GarbageCollector::create(endGameText);
     endGameText->setPosition(sf::Vector2f(4, endGameHeight));
     endGameText->setString("Game Over!");
 }

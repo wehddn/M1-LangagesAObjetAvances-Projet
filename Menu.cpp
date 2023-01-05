@@ -1,6 +1,8 @@
 #include "Menu.hpp"
 #include "Game.hpp"
 
+#include "GarbageCollector.hpp"
+
 #include <iostream>
 using namespace std;
 
@@ -198,6 +200,7 @@ void Menu::menuLoop(){
                             windowM.close();
                             g.gameLoop();
                             std::cout << "End DOMINO!\n";
+                            GarbageCollector::clean();
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         else if(getPressedItem() == 1 && status=="menu"){

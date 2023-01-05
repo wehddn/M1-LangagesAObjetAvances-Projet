@@ -1,4 +1,5 @@
 #include "Bar.hpp"
+#include "GarbageCollector.hpp"
 
 #include <iostream>
 
@@ -11,6 +12,7 @@ BarDomino::BarDomino(float height, vector<PlayerDomino*> players){
 
     for (int i=0; i<int(players.size()); i++){
         sf::Text* text1 = new sf::Text(*text);
+        GarbageCollector::create(text1);
         text1->setPosition(sf::Vector2f(4, tileh+3 + i*21));
         text1->setString(players.at(i)->getName() + " : ");
         playersNames.push_back(text1);
@@ -18,12 +20,14 @@ BarDomino::BarDomino(float height, vector<PlayerDomino*> players){
 
     for (int i=0; i<int(players.size()); i++){
         sf::Text* text1 = new sf::Text(*text);
+        GarbageCollector::create(text1);
         text1->setPosition(sf::Vector2f(90, tileh+3 + i*21));
         text1->setString("0");
         playersScores.push_back(text1);
     }
 
     sf::Text* throwOut = new sf::Text(*text);
+    GarbageCollector::create(throwOut);
     throwOut->setPosition(sf::Vector2f(4, barh - 3*22));
     throwOut->setString("Throw out : D");
     settings.push_back(throwOut);

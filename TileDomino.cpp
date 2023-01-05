@@ -19,7 +19,7 @@ TileDomino::TileDomino(int tileValue){
 
 TileDomino::TileDomino(){};
 
-void TileDomino::setUpRect(){
+void TileDomino::setUpRect(){ //TODO charger des textures dans Game
     int recth = 120;    //TODO modifier
     getRect()->setSize(sf::Vector2f(recth, recth));
     font.loadFromFile("./src/Gargi.ttf");
