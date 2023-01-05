@@ -25,13 +25,7 @@ int Board::getTileSize(){
 }
 
 void Board::setRectAtPositions(int i, int j, int x, int y){
-    /*if(board.at(i).at(j)==nullptr)
-        board.at(i).at(j) = new Cell();
-    if(board.at(i).at(j)->getTile()==nullptr){
-        board.at(i).at(j)->newRect();
-        board.at(i).at(j)->getRect()->setPosition(sf::Vector2f(x, y));
-        board.at(i).at(j)->getRect()->setSize(sf::Vector2f(recth, recth));
-    }*/
+    
 }
 
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const {

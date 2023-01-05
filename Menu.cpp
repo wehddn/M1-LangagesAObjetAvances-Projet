@@ -208,6 +208,7 @@ void Menu::menuLoop(){
                             windowM.close();
                             g.gameLoop();
                             std::cout << "End TRAX!\n";
+                            GarbageCollector::clean();
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         else if(getPressedItem() == 2 && status=="menu"){
@@ -215,6 +216,7 @@ void Menu::menuLoop(){
                             windowM.close();
                             g.gameLoop();
                             std::cout << "End CARCASSONNE!\n";
+                            GarbageCollector::clean();
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         break;

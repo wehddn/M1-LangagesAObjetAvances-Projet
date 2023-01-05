@@ -1,9 +1,11 @@
 #include "Board.hpp"
+#include "GarbageCollector.hpp"
 
 #include <iostream>
 
 BoardCarcassonne::BoardCarcassonne(){
     CellCarcassonne* c = new CellCarcassonne();
+    GarbageCollector::create(c);
     vector<CellCarcassonne*> line(1, c);
     board.push_back(line);
     boardX = 1; boardY = 1;
@@ -119,8 +121,10 @@ int BoardCarcassonne::getTileSize(){
 }
 
 void BoardCarcassonne::setRectAtPositions(int i, int j, int x, int y){
-    if(board.at(i).at(j)==nullptr)
+    if(board.at(i).at(j)==nullptr){
         board.at(i).at(j) = new CellCarcassonne();
+        GarbageCollector::create(board.at(i).at(j));
+    }
     if(board.at(i).at(j)->getTile()==nullptr){
         board.at(i).at(j)->newRect();
         board.at(i).at(j)->getRect()->setPosition(sf::Vector2f(x, y));
