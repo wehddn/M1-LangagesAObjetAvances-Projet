@@ -224,12 +224,14 @@ void Menu::menuLoop(){
                             windowM.create(sf::VideoMode(800,800), "MENU");
                         }
                         break;
-                    //default:
-                    //    break;
+                    default:
+                        break;
                 }
                 break;
             case sf::Event::Closed:
                 windowM.close();
+                break;
+            default:
                 break;
             }
         }
