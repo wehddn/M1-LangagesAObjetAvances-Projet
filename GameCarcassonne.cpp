@@ -44,8 +44,10 @@ void GameCarcassonne::setDeck()
 {
     int size = board->getTileSize();
     vector<sf::Texture*> *textures = new vector<sf::Texture*>;
+    
     for(int i=1; i<=24; i++){
         sf::Texture *texture = new sf::Texture;
+        GarbageCollector::create(texture);
         string link = "./src/carcassonne/Carcassonne_" + to_string(i) + ".png";
         texture->loadFromFile(link);
         textures->push_back(texture);
@@ -59,11 +61,13 @@ void GameCarcassonne::setDeck()
     {
         for(int j = 0; j<tileNumber[i]; j++){
             TileCarcassonne *t = new TileCarcassonne(textures->at(i), i);
+            GarbageCollector::create(t);
             t->setPosition(sf::Vector2f(size, size));
             deck.push_back(t);
         }
     }
     random_shuffle(deck.begin(), deck.end());
+    delete(textures);
 }
 
 int GameCarcassonne::getDeckSize(){
