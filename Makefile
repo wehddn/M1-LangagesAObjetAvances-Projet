@@ -54,4 +54,4 @@ GameTrax.o : GameTrax.cpp Game.hpp
 GameCarcassonne.o : GameCarcassonne.cpp Game.hpp
 	$(CCO)
 clean :
-	rm -f *.o go
+	rm -f *.o sfml-app
