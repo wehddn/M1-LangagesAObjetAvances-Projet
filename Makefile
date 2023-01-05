@@ -1,8 +1,19 @@
-CC= g++ -Wall -std=c++11 # compilateur + options
+# compilateur + options
+CC= g++ -Wall -std=c++11
 CCO= $(CC) -c $<
-OBJECTS= Tile.o TileDomino.o TileTrax.o TileCarcassonne.o Cell.o CellTrax.o CellDomino.o CellCarcassonne.o Board.o BoardDomino.o BoardTrax.o BoardCarcassonne.o Menu.o Bar.o BarDomino.o BarTrax.o BarCarcassonne.o Player.o PlayerDomino.o PlayerTrax.o PlayerCarcassonne.o Game.o GameDomino.o GameTrax.o GameCarcassonne.o GarbageCollector.o Main.o # liste des objets intermédiaires
+
+# liste des objets intermédiaires
+OBJECTS = Tile.o TileDomino.o TileTrax.o TileCarcassonne.o \
+			Cell.o CellTrax.o CellDomino.o CellCarcassonne.o \
+			Board.o BoardDomino.o BoardTrax.o BoardCarcassonne.o \
+			Bar.o BarDomino.o BarTrax.o BarCarcassonne.o \
+			Player.o PlayerDomino.o PlayerTrax.o PlayerCarcassonne.o \
+			Game.o GameDomino.o GameTrax.o GameCarcassonne.o \
+			GarbageCollector.o Menu.o Main.o
+
 all : $(OBJECTS)
 	$(CC) $(OBJECTS) -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+
 Tile.o : Tile.cpp Tile.hpp
 	$(CCO)
 TileDomino.o : TileDomino.cpp Tile.hpp
@@ -55,5 +66,6 @@ GameCarcassonne.o : GameCarcassonne.cpp Game.hpp
 	$(CCO)
 GarbageCollector.o : GarbageCollector.cpp GarbageCollector.hpp
 	$(CCO)
+
 clean :
 	rm -f *.o sfml-app
