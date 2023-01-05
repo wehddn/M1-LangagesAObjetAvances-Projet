@@ -1,0 +1,162 @@
+@startuml classeDiagramme
+class Game{
+    + deck : vector<Tile *>
+    + boardX : int
+    + boardY : int
+    + deck_size : int
+    + playersNumber : int
+    + current_player_number : int
+    + players : vector<Player *>
+    + current_player : Player
+    + tileValue : int
+
+    + Game()
+    + int getDeckSize()
+    + nextPlayer()
+    + int getPlayersNumber()
+    + gameLoop()
+    + setCurrentPlayer(int)
+}
+class GameDomino{
+    - deck : vector<TileDomino *>
+    - board : BoardDomino
+    - players : vector<PlayerDomino *>
+    - current_player : PlayerDomino*
+
+    + GameDomino(int[])
+    + getBoard() : BoardDomino
+    + getTile() : TileDomino*
+    + setPlayers()
+    + setDeck()
+}
+
+Game <|-- GameDomino
+
+class Board{
+    - board : vector<vector<Cell *>>
+    - boardX : int
+    - boardY : int
+    - boardH : int
+    - boardw : int
+    - recth : int
+    - stepScore : int
+
+    + Board()
+    + : vector<vector<Cell *>> getTiles()
+    + int getTileSize()
+    + int getStepScore()
+    - draw(sf::RenderTarget&,sf::RenderStates)
+    - setRectAtPositions(int,int,int)
+    - bool checkSides(int,int,Tile*)
+    - int sideScore(vector<int>) 
+}   
+
+class BoardDomino{
+    + board : vector<vector<CellDomino *>>
+    
+    + BoardDomino()
+    + bool putTile(int, CellDomino *,Tile Domino*)
+    + updateBoard()
+}
+
+Board <|-- BoardDomino
+class Tile{
+    + sides : vector<vector<int>>
+    + text : sf::Text[4][3]
+    + rect sf::RectangleShape
+    + font sf::Font
+
+    + Tile()
+    + Tile(int)
+    + turn()
+    + rotate()
+    + vector<vector<int>> getSides()
+    + sf::RectangleShape* getRect()
+    + setPosition(const sf::Vector2f&)
+    + draw(sf::RenderTarget&,sf::RenderStates)
+    + setText(float,float)
+}
+class TileDomino{
+    + TileDomino()
+    + TileDomino(int)
+    - setUpRect()
+}
+Tile <|-- TileDomino
+class Player{
+    # name : string
+
+    + Player()
+    + setName(string)
+    + string getName()
+
+}
+class PlayerDomino{
+    - score : int
+    - currentTile : TileDomino*
+
+    + PlayerDomino()
+    + addScore(int)
+    + int getScore()
+    + setTile(TileDomino*)
+    + TileDomino* getTile()
+}
+Player <|-- PlayerDomino
+PlayerDomino "1" o-- "1" TileDomino
+class Cell{
+    # rect : sf::RectangleShape*
+    - t : Tile*
+
+    + Cell()
+    + newRect()
+    + setRect(sf::RectangleShape*)
+    + sf::RectangleShape* getRect()
+    - draw(sf::RenderTarget&,sf::RenderStates)
+}
+class CellDomino{
+    - t : TileDomino*
+
+    + CellDomino()
+    + setTile(TileDomino*)
+    + TileDomino* getTile()
+}
+
+Cell <|-- CellDomino
+class Bar{
+    # rectBar : sf::RectangleShape
+    # rectEmpty : sf::RectangleShape
+    # font : sf::Font
+    # playersNames : vector<Sf::Text *>
+    # barh : int
+    # text : sf::Text*
+    # endGameText : sf::Text*
+    # settings : vector < sf::Text*>
+    # displayedTome : Tile
+    # barw : int
+    # tileh : int 
+    # endGame : bool
+    - playersScores : vector<sf::Text *>
+
+    + Bar()
+    + setBar()
+    + setEndText()
+    + setEndGame()
+
+}
+class BarDomino{
+    BarDomino(float, vector<PlayerDomino *>)
+    + setScore(int,int)
+    + displayNextPlayer(int)
+    + setDisplayedTile(Tile *)
+    - draw(sf::RenderTarget&,sf::RenderStates)
+}
+Bar <|-- BarDomino
+
+BarDomino *-- TileDomino
+CellDomino "1" o-- "1" TileDomino
+GameDomino ..> TileDomino
+PlayerDomino "2..*" o-- "1" GameDomino
+BoardDomino "1" o-- "1" GameDomino
+BoardDomino ..> CellDomino
+
+
+@enduml
