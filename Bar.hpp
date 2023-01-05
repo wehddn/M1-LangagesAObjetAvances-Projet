@@ -13,6 +13,7 @@ class Bar : public sf::Drawable {
         void setBar();
         void setEndText();
         void setEndGame();
+        int displayNextPlayer(int current_player);
     protected:
         sf::RectangleShape rectBar;
         sf::RectangleShape rectEmpty;
@@ -44,7 +45,6 @@ class BarDomino : public Bar {
 class BarTrax : public Bar {
     public:
         BarTrax(float barw, vector<PlayerTrax*>);
-        void displayNextPlayer(int current_player);
         void setDisplayedTile(Tile*);
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -53,7 +53,6 @@ class BarTrax : public Bar {
 class BarCarcassonne : public Bar {
     public:
         BarCarcassonne(float barw, vector<PlayerCarcassonne*>);
-        void displayNextPlayer(int current_player);
         void setDisplayedTile(Tile*);
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

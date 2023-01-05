@@ -41,17 +41,11 @@ void BarDomino::setScore(int player, int score){
 
 void BarDomino::displayNextPlayer(int current_player_number){
 
-    int previous_player_number = 0;
-    if (current_player_number == 0)
-        previous_player_number = int(playersNames.size())-1;
-    else 
-        previous_player_number = current_player_number - 1;
-
-    playersScores.at(previous_player_number)->setFillColor(sf::Color::White);
-    playersNames.at(previous_player_number)->setFillColor(sf::Color::White);
+    int previous_player_number = Bar::displayNextPlayer(current_player_number);
 
     playersScores.at(current_player_number)->setFillColor(sf::Color::Green);
-    playersNames.at(current_player_number)->setFillColor(sf::Color::Green);
+    playersScores.at(previous_player_number)->setFillColor(sf::Color::White);
+    
 
 }
 

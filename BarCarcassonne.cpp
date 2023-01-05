@@ -24,20 +24,6 @@ BarCarcassonne::BarCarcassonne(float height, vector<PlayerCarcassonne*> players)
     setEndText();
 }
 
-void BarCarcassonne::displayNextPlayer(int current_player_number){
-
-    int previous_player_number = 0;
-    if (current_player_number == 0)
-        previous_player_number = int(playersNames.size())-1;
-    else 
-        previous_player_number = current_player_number - 1;
-
-    playersNames.at(previous_player_number)->setFillColor(sf::Color::White);
-
-    playersNames.at(current_player_number)->setFillColor(sf::Color::Green);
-
-}
-
 void BarCarcassonne::setDisplayedTile(Tile* t){
     displayedTile = *t;
     displayedTile.setPosition(sf::Vector2f(tileh/2, tileh/2));

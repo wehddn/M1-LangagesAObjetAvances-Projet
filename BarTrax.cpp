@@ -24,20 +24,6 @@ BarTrax::BarTrax(float height, vector<PlayerTrax*> players){
     setEndText();
 }
 
-void BarTrax::displayNextPlayer(int current_player_number){
-
-    int previous_player_number = 0;
-    if (current_player_number == 0)
-        previous_player_number = int(playersNames.size())-1;
-    else 
-        previous_player_number = current_player_number - 1;
-
-    playersNames.at(previous_player_number)->setFillColor(sf::Color::White);
-
-    playersNames.at(current_player_number)->setFillColor(sf::Color::Green);
-
-}
-
 void BarTrax::setDisplayedTile(Tile* t){
     displayedTile = *t;
     displayedTile.setPosition(sf::Vector2f(tileh/2, tileh/2));

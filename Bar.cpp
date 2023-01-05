@@ -50,6 +50,20 @@ void Bar::setEndText(){
     endGameText->setString("Game Over!");
 }
 
+int Bar::displayNextPlayer(int current_player_number){
+
+    int previous_player_number = 0;
+    if (current_player_number == 0)
+        previous_player_number = int(playersNames.size())-1;
+    else 
+        previous_player_number = current_player_number - 1;
+
+    playersNames.at(previous_player_number)->setFillColor(sf::Color::White);
+    playersNames.at(current_player_number)->setFillColor(sf::Color::Green);
+
+    return previous_player_number;
+}
+
 void Bar::setEndGame(){
     endGame = true;
 }
