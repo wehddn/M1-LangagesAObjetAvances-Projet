@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "GarbageCollector.hpp"
 
 #include <iostream>
 
@@ -7,6 +8,7 @@ GameCarcassonne::GameCarcassonne(int settings[1])
     playersNumber = settings[0];
 
     board = new BoardCarcassonne();
+    GarbageCollector::create(board);
     setDeck();
     setPlayers();
 }
@@ -14,6 +16,7 @@ GameCarcassonne::GameCarcassonne(int settings[1])
 void GameCarcassonne::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
         PlayerCarcassonne* p = new PlayerCarcassonne();
+        GarbageCollector::create(p);
         string name = "Player " + to_string(i+1);
         p->setName(name);
         players.push_back(p);

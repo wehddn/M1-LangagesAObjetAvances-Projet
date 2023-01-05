@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "GarbageCollector.hpp"
 
 #include <iostream>
 
@@ -9,6 +10,8 @@ GameDomino::GameDomino(int settings[2])
     tileValue = settings[2];
 
     board = new BoardDomino();
+    GarbageCollector::create(board);
+    
     setDeck();
     setPlayers();
 
@@ -22,6 +25,7 @@ GameDomino::GameDomino(int settings[2])
 void GameDomino::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
         PlayerDomino* p = new PlayerDomino();
+        GarbageCollector::create(p);
         string name = "Player " + to_string(i+1);
         p->setName(name);
         players.push_back(p);

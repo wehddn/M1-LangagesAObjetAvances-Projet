@@ -1,4 +1,5 @@
 #include "Cell.hpp"
+#include "GarbageCollector.hpp"
 
 #include <iostream>
 
@@ -6,6 +7,7 @@ Cell::Cell(){}
 
 void Cell::newRect(){
     rect = new sf::RectangleShape(sf::Vector2f(100, 100));
+    GarbageCollector::create(rect);
     rect->setFillColor(sf::Color::Transparent);
     rect->setOutlineThickness(2);
     rect->setOutlineColor(sf::Color::Transparent);

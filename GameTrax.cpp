@@ -1,10 +1,12 @@
 #include "Game.hpp"
+#include "GarbageCollector.hpp"
 
 #include <iostream>
 
 GameTrax::GameTrax()
 {
     board = new BoardTrax();
+    GarbageCollector::create(board);
     setDeck();
     setPlayers();
 }
@@ -12,6 +14,7 @@ GameTrax::GameTrax()
 void GameTrax::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
         PlayerTrax* p = new PlayerTrax();
+        GarbageCollector::create(p);
         string name = "Player " + to_string(i+1);
         p->setName(name);
         players.push_back(p);
