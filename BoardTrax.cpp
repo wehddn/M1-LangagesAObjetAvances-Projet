@@ -299,6 +299,7 @@ bool BoardTrax::checkForced(int x, int y){
     if(board.at(x+1).at(y)!=nullptr){
         if(board.at(x+1).at(y)->getTile()==nullptr && checkForcedTile(x+1, y)){
             forcedLock = new pair<int, int>(x+1, y);
+            GarbageCollector::create(forcedLock);
             return true;
         }
     }
@@ -306,6 +307,7 @@ bool BoardTrax::checkForced(int x, int y){
     if(board.at(x-1).at(y)!=nullptr){
         if(board.at(x-1).at(y)->getTile()==nullptr && checkForcedTile(x-1, y)){
             forcedLock = new pair<int, int>(x-1, y);
+            GarbageCollector::create(forcedLock);
             return true;
         }
     }
@@ -313,6 +315,7 @@ bool BoardTrax::checkForced(int x, int y){
     if(board.at(x).at(y+1)!=nullptr){
         if(board.at(x).at(y+1)->getTile()==nullptr && checkForcedTile(x, y+1)){
             forcedLock = new pair<int, int>(x, y+1);
+            GarbageCollector::create(forcedLock);
             return true;
         }
     }
@@ -320,6 +323,7 @@ bool BoardTrax::checkForced(int x, int y){
     if(board.at(x).at(y-1)!=nullptr){
         if(board.at(x).at(y-1)->getTile()==nullptr && checkForcedTile(x, y-1)){
             forcedLock = new pair<int, int>(x, y-1);
+            GarbageCollector::create(forcedLock);
             return true;
         }
     }
