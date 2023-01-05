@@ -144,8 +144,6 @@ void GameTrax::gameLoop()
                 int colCounter = 0;
 
                 if (boardTrax->getTiles().size()==1){
-                    //float x = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().height;
-                    //float y = boardTrax->getTiles().at(0).at(0)->getRect()->getGlobalBounds().width;
                     boardTrax->getTiles().at(0).at(0)->getRect()->setPosition(sf::Vector2f(position.x, position.y));
                 }
                 

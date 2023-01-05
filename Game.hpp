@@ -70,6 +70,7 @@ public :
         int getDeckSize();
         void setPlayers();
         void setDeck();
+        void putFirstTile(TileCarcassonne* t);
         void setCurrentPlayer(int current_player_number);
         void gameLoop();
     private :

@@ -17,6 +17,10 @@ bool BoardCarcassonne::putTile(int x, int y, CellCarcassonne* c, TileCarcassonne
 
     if(!checkSides(x, y, t))
         return false;
+    
+    if(board.size()==1){
+        c->getRect()->setPosition(sf::Vector2f(boardw/2,boardh/2));
+    }
 
     t->setPosition(c->getRect()->getPosition());
     c->setTile(t);

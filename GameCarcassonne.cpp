@@ -42,7 +42,6 @@ void GameCarcassonne::setCurrentPlayer(int current_player_number){
 
 void GameCarcassonne::setDeck()
 {
-    int size = board->getTileSize();
     vector<sf::Texture*> *textures = new vector<sf::Texture*>;
     
     for(int i=1; i<=24; i++){
@@ -54,7 +53,7 @@ void GameCarcassonne::setDeck()
     }
 
     int tileNumber[] = {9, 3, 2, 1, 1, 3, 3, 8, 4,
-                        5, 2, 3, 4, 2, 3, 2, 4, 3,
+                        5, 2, 3, 4, 2, 3, 2, 3, 3,
                         1, 2, 1, 1, 2, 3};
 
     for (int i = 0; i < 24; i++)
@@ -62,12 +61,24 @@ void GameCarcassonne::setDeck()
         for(int j = 0; j<tileNumber[i]; j++){
             TileCarcassonne *t = new TileCarcassonne(textures->at(i), i);
             GarbageCollector::create(t);
-            t->setPosition(sf::Vector2f(size, size));
             deck.push_back(t);
         }
     }
+
+    TileCarcassonne *t = new TileCarcassonne(textures->at(16), 16);
+    GarbageCollector::create(t);
+    putFirstTile(t);
+
     random_shuffle(deck.begin(), deck.end());
     delete(textures);
+}
+
+void GameCarcassonne::putFirstTile(TileCarcassonne* t){
+    CellCarcassonne* c = getBoard()->getTiles().at(0).at(0);
+    c->newRect();
+
+    board->putTile(0, 0, c, t);
+    board->updateBoard();
 }
 
 int GameCarcassonne::getDeckSize(){
@@ -176,7 +187,6 @@ void GameCarcassonne::gameLoop()
                             {
                                 if (boardCarcassonne->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
-                                    //end = (boardCarcassonne->checkPaths(rawCounter, colCounter) || getDeckSize()<=0);
                                     end = getDeckSize()<=0;
                                     if(!end){
                                         current_player->setTile(nullptr);
