@@ -51,6 +51,7 @@ void GameDomino::setDeck()
     for (int i = 0; i < deck_size; i++)
     {
         TileDomino *t = new TileDomino(tileValue);
+        GarbageCollector::create(t);
         t->setPosition(sf::Vector2f(size, size));
         deck.push_back(t);
     }

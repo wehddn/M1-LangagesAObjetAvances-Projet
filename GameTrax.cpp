@@ -42,12 +42,15 @@ void GameTrax::setDeck()
 {
     int size = board->getTileSize();
     sf::Texture *textureH = new sf::Texture;
+    GarbageCollector::create(textureH);
     textureH->loadFromFile("./src/tileTraxH.png");
     sf::Texture *textureT = new sf::Texture;
+    GarbageCollector::create(textureT);
     textureT->loadFromFile("./src/tileTraxT.png");
     for (int i = 0; i < deck_size; i++)
     {
         TileTrax *t = new TileTrax(textureH, textureT);
+        GarbageCollector::create(t);
         t->setPosition(sf::Vector2f(size, size));
         deck.push_back(t);
     }

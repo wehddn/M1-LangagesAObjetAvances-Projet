@@ -24,6 +24,8 @@ void TileDomino::setUpRect(){ //TODO charger des textures dans Game
     getRect()->setSize(sf::Vector2f(recth, recth));
     font.loadFromFile("./src/Gargi.ttf");
     sf::Texture *texture = new sf::Texture;
+    
+    
     texture->loadFromFile("./src/tile.png");
     getRect()->setTexture(texture);
         
