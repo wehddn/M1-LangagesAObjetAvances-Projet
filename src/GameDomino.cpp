@@ -3,19 +3,28 @@
 
 #include <iostream>
 
-GameCarcassonne::GameCarcassonne(int settings[1])
+GameDomino::GameDomino(int settings[2])
 {
     playersNumber = settings[0];
+    deck_size = settings[1];
+    tileValue = settings[2];
 
-    board = new BoardCarcassonne();
+    board = new BoardDomino();
     GarbageCollector::create(board);
+    
     setDeck();
     setPlayers();
+
+    CellDomino* c = getBoard()->getTiles().at(0).at(0);
+    TileDomino* current_tile = getTile();
+    board->updateBoard();
+    board->putTile(0, 0, c, current_tile);
+    board->updateBoard();
 }
 
-void GameCarcassonne::setPlayers(){
+void GameDomino::setPlayers(){
     for(int i=0; i<playersNumber; i++){    
-        PlayerCarcassonne* p = new PlayerCarcassonne();
+        PlayerDomino* p = new PlayerDomino();
         GarbageCollector::create(p);
         string name = "Player " + to_string(i+1);
         p->setName(name);
@@ -24,92 +33,62 @@ void GameCarcassonne::setPlayers(){
     current_player = players[0];
 }
 
-TileCarcassonne *GameCarcassonne::getTile()
+TileDomino *GameDomino::getTile()
 {
-    TileCarcassonne *r = deck.back();
+    TileDomino *r = deck.back();
     deck.pop_back();
     return r;
 }
 
-BoardCarcassonne *GameCarcassonne::getBoard()
+BoardDomino *GameDomino::getBoard()
 {
     return board;
 }
 
-void GameCarcassonne::setCurrentPlayer(int current_player_number){
-    current_player = players[current_player_number];
-}
-
-void GameCarcassonne::setDeck()
+void GameDomino::setDeck()
 {
-    vector<sf::Texture*> *textures = new vector<sf::Texture*>;
-    
-    for(int i=1; i<=24; i++){
-        sf::Texture *texture = new sf::Texture;
-        GarbageCollector::create(texture);
-        string link = "./src/carcassonne/Carcassonne_" + to_string(i) + ".png";
-        texture->loadFromFile(link);
-        textures->push_back(texture);
-    }
-
-    int tileNumber[] = {9, 3, 2, 1, 1, 3, 3, 8, 4,
-                        5, 2, 3, 4, 2, 3, 2, 3, 3,
-                        1, 2, 1, 1, 2, 3};
-
-    for (int i = 0; i < 24; i++)
+    int size = board->getTileSize();
+    for (int i = 0; i < deck_size; i++)
     {
-        for(int j = 0; j<tileNumber[i]; j++){
-            TileCarcassonne *t = new TileCarcassonne(textures->at(i), i);
-            GarbageCollector::create(t);
-            deck.push_back(t);
-        }
+        TileDomino *t = new TileDomino(tileValue);
+        GarbageCollector::create(t);
+        t->setPosition(sf::Vector2f(size, size));
+        deck.push_back(t);
     }
-
-    TileCarcassonne *t = new TileCarcassonne(textures->at(16), 16);
-    GarbageCollector::create(t);
-    putFirstTile(t);
-
-    random_shuffle(deck.begin(), deck.end());
-    delete(textures);
 }
 
-void GameCarcassonne::putFirstTile(TileCarcassonne* t){
-    CellCarcassonne* c = getBoard()->getTiles().at(0).at(0);
-    c->newRect();
-
-    board->putTile(0, 0, c, t);
-    board->updateBoard();
-}
-
-int GameCarcassonne::getDeckSize(){
+int GameDomino::getDeckSize(){
     return deck.size();
 }
 
-void GameCarcassonne::gameLoop()
+void GameDomino::setCurrentPlayer(int current_player_number){
+    current_player = players[current_player_number];
+}
+
+void GameDomino::gameLoop()
 {
     bool lock_click;
     bool key_click_right;
     bool falsePlace;
     bool zoom;
+    bool throwOut;
 
     bool end = false;
 
     sf::RectangleShape *redRect = nullptr;
 
-    BoardCarcassonne *boardCarcassonne = getBoard();
+    BoardDomino *board = getBoard();
 
     int windowh = 600;
     int windoww = 800;
 
-    sf::RenderWindow window(sf::VideoMode(windoww, windowh), "CARCASSONNE");
+    sf::RenderWindow window(sf::VideoMode(windoww, windowh), "DOMINO");
 
-    BarCarcassonne bar(windowh, players);
+    BarDomino bar(windowh, players);
     bar.displayNextPlayer(0);
 
     Camera cam;
     cam.view = window.getView();
-
-    std::cout << "Start Carcassonne!\n";
     
     while (window.isOpen())
     {
@@ -166,12 +145,7 @@ void GameCarcassonne::gameLoop()
 
                 int rawCounter = 0;
                 int colCounter = 0;
-
-                if (boardCarcassonne->getTiles().size()==1){
-                    boardCarcassonne->getTiles().at(0).at(0)->getRect()->setPosition(sf::Vector2f(position.x, position.y));
-                }
-                
-                for (auto &row : boardCarcassonne->getTiles())
+                for (auto &row : board->getTiles())
                 {
                     for (auto &col : row)
                     {
@@ -185,9 +159,11 @@ void GameCarcassonne::gameLoop()
                             // sinon, on mis l'emplacement sélectionné en rouge
                             if (r != nullptr && r->getGlobalBounds().contains(position.x, position.y))
                             {
-                                if (boardCarcassonne->putTile(rawCounter, colCounter, col, current_player->getTile()))
+                                if (board->putTile(rawCounter, colCounter, col, current_player->getTile()))
                                 {
-                                    end = getDeckSize()<=0;
+                                    current_player->addScore(board->getStepScore());
+                                    bar.setScore(current_player_number, current_player->getScore());
+                                    end = (getDeckSize()<=0);
                                     if(!end){
                                         current_player->setTile(nullptr);
                                         falsePlace = false;
@@ -233,12 +209,33 @@ void GameCarcassonne::gameLoop()
             {
                 key_click_right = false;
             }
+
             // on tourne un tuile apres avoir appuye sur la "fleches droite(???)"
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Right && key_click_right != true)
             {
                 key_click_right = true;
                 current_player->getTile()->rotate();
                 bar.setDisplayedTile(current_player->getTile());
+            }
+            
+
+            // on jete un tuile avec D
+            if (event.type == sf::Event::KeyPressed && (event.key.code == sf::Keyboard::D))
+            {
+                throwOut = false;
+            }
+
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::D && throwOut != true)
+            {
+                throwOut = true;
+                end = (getDeckSize()==0);
+                if(!end){
+                    current_player->setTile(nullptr);
+                    nextPlayer();
+                    bar.displayNextPlayer(current_player_number);
+                }
+                else
+                    bar.setEndGame();
             }
         }
 
@@ -247,7 +244,7 @@ void GameCarcassonne::gameLoop()
         if (current_player->getTile() == nullptr)
         {
             current_player->setTile(getTile());
-            boardCarcassonne->updateBoard();
+            board->updateBoard();
             // affichage de la tuile suivante dans le coin
             //displayedTile = *current_tile;
             //displayedTile.setPosition(sf::Vector2f(0, 0));
@@ -257,7 +254,7 @@ void GameCarcassonne::gameLoop()
         window.clear();
 
         window.setView(cam.view);
-        window.draw(*boardCarcassonne);
+        window.draw(*board);
 
         // fixer element (ne pas changer lors du zoom)
         window.setView(window.getDefaultView());

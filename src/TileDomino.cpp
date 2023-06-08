@@ -22,11 +22,11 @@ TileDomino::TileDomino(){};
 void TileDomino::setUpRect(){ //TODO charger des textures dans Game
     int recth = 120;    //TODO modifier
     getRect()->setSize(sf::Vector2f(recth, recth));
-    font.loadFromFile("./src/Gargi.ttf");
+    font.loadFromFile("./resources/Gargi.ttf");
     sf::Texture *texture = new sf::Texture;
     
     
-    texture->loadFromFile("./src/tile.png");
+    texture->loadFromFile("./resources/tile.png");
     getRect()->setTexture(texture);
         
     for (int i=0; i<4; i++){

@@ -14,7 +14,7 @@ TileTrax::TileTrax(sf::Texture *textureH, sf::Texture *textureT){
 void TileTrax::setUpRect(){
     int recth = 120;    //TODO modifier
     getRect()->setSize(sf::Vector2f(recth, recth));
-    font.loadFromFile("./src/Gargi.ttf");
+    font.loadFromFile("./resources/Gargi.ttf");
     getRect()->setTexture(this->head);
     getRect()->setOrigin(sf::Vector2f(getRect()->getLocalBounds().width, getRect()->getLocalBounds().height)/2.f);
     directions = {true, false, true, false};

@@ -16,7 +16,7 @@ void Bar::setBar(){
     rectEmpty.setOutlineThickness(3);
     rectEmpty.setOutlineColor(sf::Color::White);
 
-    font.loadFromFile("./src/Gargi.ttf");
+    font.loadFromFile("./resources/Gargi.ttf");
 
     playersNames = std::vector<sf::Text*>();
 

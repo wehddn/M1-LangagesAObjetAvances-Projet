@@ -43,10 +43,10 @@ void GameTrax::setDeck()
     int size = board->getTileSize();
     sf::Texture *textureH = new sf::Texture;
     GarbageCollector::create(textureH);
-    textureH->loadFromFile("./src/tileTraxH.png");
+    textureH->loadFromFile("./resources/tileTraxH.png");
     sf::Texture *textureT = new sf::Texture;
     GarbageCollector::create(textureT);
-    textureT->loadFromFile("./src/tileTraxT.png");
+    textureT->loadFromFile("./resources/tileTraxT.png");
     for (int i = 0; i < deck_size; i++)
     {
         TileTrax *t = new TileTrax(textureH, textureT);
@@ -84,8 +84,6 @@ void GameTrax::gameLoop()
 
     Camera cam;
     cam.view = window.getView();
-
-    std::cout << "Start TRAX!\n";
     
     while (window.isOpen())
     {
