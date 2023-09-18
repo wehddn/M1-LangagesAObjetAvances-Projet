@@ -7,7 +7,7 @@ Une description complète du projet, y compris les règles du jeux et un guide p
 [Un diagramme UML](docs/class.plantuml) au format PlantUML a été créé pour illustrer plus en détail la structure du projet.
 
 ## Installation
-Vous devez avoir installé la bibliothèque [SFML](https://www.sfml-dev.org/tutorials/2.6/start-linux.php), par exemple avec :
+Vous devez avoir installé C++ et la bibliothèque [SFML](https://www.sfml-dev.org/tutorials/2.6/start-linux.php), par exemple avec :
 ```bash
 sudo apt-get install libsfml-dev
 ```
