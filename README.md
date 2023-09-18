@@ -1,12 +1,21 @@
-# Projet-LangagesAObjetAvances-2022-2023
+# M1 - 2022/2023 - Langages à Objet Avancés - Projet
 
-Il s'agit du projet comprenant les jeux Dominos, Trax et Carcassonne
+## Description
+Ce projet combine plusieurs jeux de société tels que Dominos, Trax et Carcassonne dans un seul progiciel développé en C++ à l'aide de la bibliothèque SFML (Simple and Fast Multimedia Library).
+Une description complète du projet, y compris les règles du jeux et un guide pour leur mise en œuvre, est disponible dans [le fichier correspondant](docs/projet_2022.pdf).
 
-pour compiler il suffit de se placer dans ce dossier et de faire :
+[Un diagramme UML](docs/class.plantuml) au format PlantUML a été créé pour illustrer plus en détail la structure du projet.
 
-- make
+## Installation
+Vous devez avoir installé la bibliothèque [SFML](https://www.sfml-dev.org/tutorials/2.6/start-linux.php), par exemple avec :
+```bash
+sudo apt-get install libsfml-dev
+```
 
-puis de lancer le projet avec : 
+## Utilisation
+### Pour compiler l'application :
+make
 
-- make run
+### Pour lance l'application :
+make run
 
